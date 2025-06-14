@@ -1,0 +1,70 @@
+.sliding-tabs {
+  box-shadow: 0 0 1px 0 rgba(24, 94, 224, 0.15), 0 6px 12px 0 rgba(24, 94, 224, 0.15);
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #fff;
+  color: #000;
+  border-radius: 25px;
+  height: 48px;
+  padding: 4px;
+  border: 4px solid #fff;
+  margin: 10px 10px;
+  font-size: 16px;
+  font-weight: 400;
+  user-select: none;
+  /* scale: 0.9; */
+  position: relative;
+  min-width: 300px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE和Edge */
+}
+
+.sliding-tabs::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.sliding-tabs .sliding-block {
+  position: absolute;
+  background-color: #e6eef9;
+  transition: all 0.3s;
+  border-radius: 25px;
+}
+
+.tab-option {
+  padding: 8px 10px;
+  text-align: center;
+  border-radius: 16px;
+  cursor: pointer;
+  display: flex;
+  position: relative;
+  z-index: 1;
+  transition: all 0.3s;
+  min-width: 70px;
+  /* text-align: center; */
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  flex-grow: 1;
+}
+
+.tab-option > div {
+  line-height: 18px;
+}
+
+.tab-option.checked {
+  color: #1677ff;
+  font-weight: 500;
+}
+
+.tab-option input {
+  height: 0;
+  width: 0;
+  visibility: hidden;
+}
+.tab-option label {
+  margin: 0;
+  cursor: pointer;
+}

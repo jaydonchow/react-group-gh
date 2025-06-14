@@ -1,0 +1,81 @@
+a {
+  text-decoration: none;
+  color: #007aff;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.personal-wrapper {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 10px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  left: 0;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.2); /* 半透明背景 */
+  backdrop-filter: blur(10px); /* 毛玻璃模糊效果 */
+  -webkit-backdrop-filter: blur(10px); /* 兼容 Safari */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* 添加阴影 */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* 边框 */
+  z-index: 99;
+}
+
+.avatar-setting {
+  position: relative;
+  z-index: 9;
+  transition: all 0.4s;
+  /* transition-delay: 0.1s; */
+}
+
+.avatar-setting .setting {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  background: #ffffff66;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header-avatar {
+  transform: translate(calc(50vw - 10px - 64px - 50%), 80%);
+  scale: 1.5;
+  border-radius: 50%;
+  z-index: 9999;
+}
+
+.setting-body {
+  background: #f5f5f5;
+  width: 100vw;
+  height: 100vh;
+}
+
+.user-info {
+  background-color: #fff;
+  border-radius: 12px;
+  margin: 20px;
+  padding: 0px 20px;
+  box-shadow: 0 0 12px 2px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.user-info .info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 0px;
+  font-size: 18px;
+  line-height: 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.user-info .info-item:last-child {
+  border-bottom: 1px solid transparent;
+}
+
+.user-info .info-item span:first-child {
+  color: grey;
+}

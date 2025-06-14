@@ -1,0 +1,41 @@
+.timeline-wrapper {
+  margin-top: 100px;
+  margin-bottom: 100px;
+}
+
+.timeline-item {
+  background-color: #fefefe;
+  padding: 10px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.timeline-item .adm-tag {
+  padding: 4px 6px;
+}
+
+.first-section {
+  display: flex;
+  justify-content: space-between;
+}
+
+.image-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  /* justify-content: space-between; */
+}
+
+.image-preview .adm-image {
+  flex: 1 1 calc(33.33% - 10px); /* 动态计算宽度，留出间隙 */
+  min-width: 50px; /* 防止内容过小时挤压变形 */
+  max-height: 162px;
+  aspect-ratio: 1;
+}
+
+.image-preview-mask {
+  background-color: rgba(0, 0, 0, 0.85) !important;
+}

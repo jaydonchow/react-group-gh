@@ -1,0 +1,114 @@
+/* 遮罩层动画 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* 内容动画 */
+@keyframes slideIn {
+  from {
+    transform: translateY(60px);
+    opacity: 0;
+    scale: 0.5;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+    scale: 1;
+  }
+  to {
+    transform: translateY(60px);
+    opacity: 0;
+    scale: 0.5;
+  }
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* background-color: rgba(0, 0, 0, 0.5); */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.modal-backdrop.opening {
+  animation: fadeIn 0.3s ease forwards;
+  pointer-events: auto;
+}
+
+.modal-backdrop.closing {
+  animation: fadeOut 0.3s ease forwards;
+}
+
+.modal-content {
+  background-color: #f0f0f0;
+  /* Safari/Chrome */
+  padding: 20px;
+  /* border-radius: 8px; */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  /* max-width: 90%;
+  max-height: 90vh; */
+  overflow-y: auto;
+  opacity: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.modal-content.opening {
+  animation: slideIn 0.3s ease 0.1s forwards; /* 添加0.1s延迟，让遮罩先出现 */
+}
+
+.modal-content.closing {
+  animation: slideOut 0.3s ease forwards;
+}
+
+.modal-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0 8px;
+  color: #666;
+  transition: color 0.2s;
+}
+
+.modal-close-button:hover {
+  color: #333;
+}
+
+/* 阻止动画期间的内容闪烁 */
+.modal-backdrop:not(.opening):not(.closing) {
+  display: none;
+}

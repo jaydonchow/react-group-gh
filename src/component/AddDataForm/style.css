@@ -1,0 +1,29 @@
+.modal-inner-content {
+  padding: 20px;
+  background-color: #f0f0f0;
+
+}
+.modal-inner-control {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  gap: 20px;
+}
+
+.modal-inner-footer {
+  position: fixed;
+  bottom: 20px;
+  width: calc(100vw - 40px);
+}
+
+.my-image-uploader .adm-image-uploader-space {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 强制每行显示3列 */
+  gap: 5px; /* 控制元素间距，可自定义 */
+  justify-content: space-between; /* 可选：水平均匀分布 */
+}
+
+.my-image-uploader .adm-image-uploader-upload-button {
+  background-color: #e7e7e7;
+}
