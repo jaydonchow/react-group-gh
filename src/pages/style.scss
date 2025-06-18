@@ -4,9 +4,8 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  background: -webkit-linear-gradient(top, #8dc4ff, #ffc9c9); /* Safari/Chrome */
   height: 100vh;
+  max-height: -webkit-fill-available;
   overflow: scroll;
 }
 
@@ -46,55 +45,4 @@ img {
   color: #fff;
   font-size: 1.2rem;
   text-align: center;
-}
-
-.bottom-button {
-  position: fixed;
-  width: 50px;
-  bottom: 80px;
-  right: 10px;
-  transform: translateY(0);
-  z-index: 999;
-  background: #1677ff;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  box-shadow: 5px 5px 15px 5px #00000022;
-  &.change-to-add-btn {
-    animation-name: change-to-add-btn;
-    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    animation-duration: 0.4s;
-    animation-fill-mode: forwards;
-  }
-  &.change-to-close-btn {
-    z-index: 9999;
-    animation-name: change-to-close-btn;
-    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    animation-duration: 0.4s;
-    animation-fill-mode: forwards;
-  }
-  @keyframes change-to-close-btn {
-    0% {
-      transform: translateY(0) rotate(0deg);
-      background: #1677ff;
-    }
-    100% {
-      background: #ff5d5d;
-      transform: translateY(calc(-100vh + 50px + 90px)) rotate(405deg); /* 视窗高度减去上下间距 */
-    }
-  }
-
-  @keyframes change-to-add-btn {
-    0% {
-      background: #ff5d5d;
-      transform: translateY(calc(-100vh + 50px + 90px)) rotate(405deg); /* 视窗高度减去上下间距 */
-    }
-    100% {
-      background: #1677ff;
-      transform: translateY(0) rotate(0deg);
-    }
-  }
 }

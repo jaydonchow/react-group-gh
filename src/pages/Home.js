@@ -4,12 +4,9 @@ import { SetOutline, AddOutline } from "antd-mobile-icons";
 
 import AddDataForm from "@/component/AddDataForm";
 import TimelineContent from "@/component/TimelineContent";
-// import thImage from "@/assets/th.jpg";
-// import seaImage from "@/assets/sea.jpg";
-// import birdImage from "@/assets/bird.jpg";
-// import lionImage from "@/assets/lion.jpg";
 import { addNoteItem, queryByUserId, updateNoteItem, deleteNoteItem, getUserProfile } from "../api/index";
 import Header from "@/component/Header";
+import FloatingButton from "@/component/FloatingButton";
 export default () => {
   const [visible, setVisible] = useState(false);
   const [isFirstLoad, setIsFirstLoad] = useState(0);
@@ -24,58 +21,10 @@ export default () => {
       if (isFirstLoad === 0) {
         setIsFirstLoad(1);
       }
-      // console.log("fetchData", res);
-      // res = [
-      //   {
-      //     description: "今天生日，一起吃烤肉!!",
-      //     dateValue: "2025-05-13",
-      //     title: "",
-      //     userId: "1",
-      //     fileList: [
-      //       {
-      //         url: thImage,
-      //       },
-      //       {
-      //         url: seaImage,
-      //       },
-      //       {
-      //         url: birdImage,
-      //       },
-      //     ],
-      //     id: "68280568b9570274df1a7654",
-      //   },
-      //   {
-      //     description: "云南之旅",
-      //     dateValue: "2025-05-01",
-      //     userId: "1",
-      //     fileList: [
-      //       {
-      //         url: seaImage,
-      //       },
-      //       {
-      //         url: lionImage,
-      //       },
-      //     ],
-      //     id: "682b582bd3496c4246834e09",
-      //   },
-      //   {
-      //     description: "开心开心",
-      //     dateValue: "2025-06-12",
-      //     userId: "1",
-      //     fileList: [
-      //       {
-      //         url: birdImage,
-      //       },
-      //     ],
-      //     id: "684a9f51bf6625518c5a4e21",
-      //   },
-      // ];
       setIsFirstLoad(2);
       setDataList(res);
     });
   }
-
-
 
   function handleEdit(eData) {
     setEditData(eData);
@@ -102,16 +51,16 @@ export default () => {
           onEditFn={handleEdit}
         ></TimelineContent>
       )}
-      <div
-        className={`bottom-button ${visible ? "change-to-close-btn" : "change-to-add-btn"}`}
+      <FloatingButton
         onClick={() => {
           // query();
           setVisible(!visible);
           setEditData(null);
         }}
-      >
-        <AddOutline fontSize={36} fontWeight={900} color="#fff" />
-      </div>
+        style={{
+          "--after-bottom": "calc(-100vh + 50px + 20px)",
+        }}
+      ></FloatingButton>
       <Popup
         visible={visible}
         onMaskClick={() => {

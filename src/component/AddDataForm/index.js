@@ -32,6 +32,7 @@ export default (props) => {
   return (
     <div className="modal-inner-content">
       <div className="modal-inner-control">
+        <div className="emoji">✍️</div>
         <Input.TextArea
           value={form.description}
           onChange={(e) => {
@@ -45,6 +46,7 @@ export default (props) => {
           showCount
           maxLength={200}
         />
+        <div className="emoji">⏱️</div>
         <DatePicker
           variant={"filled"}
           allowClear={false}
@@ -55,6 +57,7 @@ export default (props) => {
             });
           }}
         />
+        <div className="emoji">📷</div>
         <ImageUploader
           value={form.fileList}
           onChange={(items) => {

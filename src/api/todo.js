@@ -8,41 +8,40 @@ AV.init({
   serverURL: "https://vtopa8ot.lc-cn-n1-shared.com",
 });
 
-export function addNoteItem(data) {
-  // 声明 class
-  const Notes = AV.Object.extend("Notes");
-  // 构建对象
-  const notes = new Notes();
+export function addCategoryItem(data) {
+  return new Promise((resolve, reject) => {
+    const Category = AV.Object.extend("Category");
+    const category = new Category();
 
-  // 为属性赋值
-  notes.set("userId", data.userId || "1");
-  // notes.set("title", data.title);
-  notes.set("description", data.description);
-  notes.set("dateValue", data.dateValue);
-  notes.set("fileList", data.fileList);
+    category.set("userId", data.userId || "1");
+    // notes.set("title", data.title);
+    category.set("label", data.label);
+    category.set("order", data.order || 1);
 
-  // 将对象保存到云端
-  notes.save().then(
-    (note) => {
-      // 成功保存之后，执行其他逻辑
-      console.log(`保存成功。objectId：${note.id}`);
-    },
-    (error) => {
-      // 异常处理
-      console.log(error);
-    }
-  );
+    category.save().then(
+      (cate) => {
+        console.log(`保存成功。objectId：${cate.id}`);
+        resolve({
+          ...cate.attributes,
+          id: cate.id,
+        });
+      },
+      (error) => {
+        console.log(error);
+        reject(error);
+      }
+    );
+  });
 }
 
-export function queryByUserId() {
-  const query = new AV.Query("Notes");
+export function queryAllCategory() {
+  const query = new AV.Query("Category");
   query.equalTo("userId", "1");
   // query.get("68275067d3496c42466ad9c3").then
   return new Promise((resolve, reject) => {
     query
-      .descending("dateValue")
       .find()
-      .then((notes) => {
+      .then((category) => {
         // todo 就是 objectId 为 582570f38ac247004f39c24b 的 Todo 实例
         // const title = todo.get("title");
         // const priority = todo.get("priority");
@@ -51,7 +50,7 @@ export function queryByUserId() {
         // const updatedAt = todo.updatedAt;
         // const createdAt = todo.createdAt;
         resolve(
-          notes.map((n) => {
+          category.map((n) => {
             return {
               ...n.attributes,
               id: n.id,
@@ -65,6 +64,31 @@ export function queryByUserId() {
   });
 }
 
+export function addTodoItem(data) {
+  return new Promise((resolve, reject) => {
+    const Todo = AV.Object.extend("Todo");
+    const todo = new Todo();
+
+    todo.set("userId", data.userId || "1");
+    todo.set("label", data.label);
+    todo.set("order", data.order || 1);
+
+    todo.save().then(
+      (cate) => {
+        console.log(`保存成功。objectId：${cate.id}`);
+        resolve({
+          ...cate.attributes,
+          id: cate.id,
+        });
+      },
+      (error) => {
+        console.log(error);
+        reject(error);
+      }
+    );
+  });
+}
+// -----------------------------------------
 export async function updateNoteItem(data) {
   const note = AV.Object.createWithoutData("Notes", data.id);
   // note.set("title", data.title);
@@ -144,33 +168,4 @@ export async function updateUserProfile(data) {
     content: "修改成功",
   });
   return result;
-}
-
-export async function mockUpload(localFile) {
-  return new Promise((resolve, reject) => {
-    new Compressor(localFile, {
-      quality: 0.2,
-      success(result) {
-        const finalFile = new File([result], result.name, { type: result.type });
-        const file = new AV.File(finalFile.name, finalFile);
-        file.save().then(
-          (f) => {
-            console.log(`文件保存完成`, f.url());
-            resolve({
-              url: f.url(),
-            });
-          },
-          (error) => {
-            // 保存失败，可能是文件无法被读取，或者上传过程中出现问题
-            console.log(error);
-            reject(error);
-          }
-        );
-      },
-      error(err) {
-        console.log(err.message);
-        reject(err);
-      },
-    });
-  });
 }

@@ -1,0 +1,49 @@
+.bottom-button {
+  --width: 50px;
+  --height: 50px;
+  --init-bottom: -80px;
+  --after-bottom: -200px; // 100vh - height - top
+  position: fixed;
+  bottom: 0px;
+  right: 10px;
+  transform: translateY(var(--init-bottom));
+  z-index: 999;
+  // background: #1677ff;
+  width: var(--width);
+  height: var(--height);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  // box-shadow: 5px 5px 15px 5px #00000022;
+  &.change-to-add-btn {
+    animation-name: change-to-add-btn;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+  }
+  &.change-to-close-btn {
+    z-index: 9999;
+    animation-name: change-to-close-btn;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+  }
+  @keyframes change-to-close-btn {
+    0% {
+      transform: translateY(var(--init-bottom)) rotate(0deg);
+    }
+    100% {
+      transform: translateY(var(--after-bottom)) rotate(765deg); /* 视窗高度减去上下间距 */
+    }
+  }
+
+  @keyframes change-to-add-btn {
+    0% {
+      transform: translateY(var(--after-bottom)) rotate(765deg); /* 视窗高度减去上下间距 */
+    }
+    100% {
+      transform: translateY(var(--init-bottom)) rotate(0deg);
+    }
+  }
+}

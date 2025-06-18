@@ -43,7 +43,7 @@ function Demo() {
       <SearchBox
         placeholder={"please enter something"}
         varStyle={{
-          "--width": "250px",
+          // "--width": "250px",
           "--height": "32px",
           "--border-width": "2px",
           "--color": "#0078d4"

@@ -1,0 +1,54 @@
+.emoji-select {
+  font-family: apple color emoji, segoe ui emoji, noto color emoji, android emoji, emojisymbols, emojione mozilla,
+    twemoji mozilla, segoe ui symbol, Noto Color Emoji Compat, emoji, sans-serif;
+  .emoji-category-swiper {
+    width: 280px;
+    overflow: hidden;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    &::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
+    .emoji-category-container {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      // width: 300px;
+      height: 30px;
+      .category-item {
+        cursor: pointer;
+        white-space: nowrap;
+        user-select: none;
+        padding: 2px 4px;
+        border-radius: 6px;
+        font-size: 18px;
+        // border-bottom: 2px solid transparent;
+        &.active {
+          color: #fff;
+          background-color: blueviolet;
+          // border-bottom: 2px solid blueviolet;
+        }
+      }
+    }
+  }
+
+  .emoji-container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 280px;
+    max-height: 240px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    .emoji-item {
+      font-size: 26px;
+      text-align: center;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+    }
+    &::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
+  }
+}

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Tag, Image, Popover, ImageViewer, Skeleton } from "antd-mobile";
 import { MoreOutline, EditSFill, DeleteOutline, ClockCircleOutline } from "antd-mobile-icons";
+import birdImage from "@/assets/bird.jpg";
 
 import "./style.css";
 
@@ -111,6 +112,7 @@ export default (props) => {
                       width={64}
                       fit="cover"
                       style={{ borderRadius: 8 }}
+                      fallback={<img src={birdImage}></img>}
                       onClick={() => {
                         const urlList = v.fileList.map((f) => f.url);
                         ImageViewer.Multi.show({
@@ -127,7 +129,7 @@ export default (props) => {
           </div>
         );
       })}
-      <div>没有更多啦~</div>
+      <div className="no-more">没有更多啦~</div>
     </div>
   );
 };

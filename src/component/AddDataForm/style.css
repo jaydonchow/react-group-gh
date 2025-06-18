@@ -4,7 +4,7 @@
 
 }
 .modal-inner-control {
-  margin-top: 50px;
+  /* margin-top: 50px; */
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -26,4 +26,8 @@
 
 .my-image-uploader .adm-image-uploader-upload-button {
   background-color: #e7e7e7;
+}
+
+.emoji {
+  font-size: 40px;
 }

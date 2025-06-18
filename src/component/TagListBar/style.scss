@@ -1,0 +1,59 @@
+.tag-list-bar {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  width: 100%;
+  overflow-x: scroll;
+  -webkit-overflow-scrolling: touch; /* 启用iOS的平滑滚动和回弹效果 */
+  overscroll-behavior: contain; /* 防止滚动链，但不会阻止回弹效果 */
+  .container {
+    width: 1000px;
+    min-width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    background-color: #fefefe66;
+  }
+}
+.tag-list-bar::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.tag-radio {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #f0f0f066;
+}
+
+.ln-tag-item {
+  // min-width: 60px;
+  // height: 40px;
+  background: #ffffff;
+  border-radius: 10px;
+  // box-shadow: 8px 8px 16px #e4e4e4, -8px -8px 16px #f0f0f0;
+  box-shadow: rgba(14, 63, 126, 0.06) 0px 0px 0px 1px, rgba(42, 51, 70, 0.03) 0px 1px 1px -0.5px,
+    rgba(42, 51, 70, 0.04) 0px 2px 2px -1px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px,
+    rgba(42, 51, 70, 0.03) 0px 5px 5px -2.5px, rgba(42, 51, 70, 0.03) 0px 10px 10px -5px,
+    rgba(42, 51, 70, 0.03) 0px 24px 24px -8px;
+  border: 2px solid transparent;
+  text-align: center;
+  padding: 6px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  &.active {
+    background-color: #007aff;
+    color: #fff;
+  }
+  &.ln-tag-add {
+    background-color: transparent;
+    border: 2px dashed rgba(128, 128, 128, 0.288);
+    min-width: 20px;
+  }
+  &.ln-tag-input {
+    padding: 0px;
+    min-width: 100px;
+  }
+}

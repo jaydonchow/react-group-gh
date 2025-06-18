@@ -7,7 +7,7 @@ a {
 
 .personal-wrapper {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   gap: 10px;
   position: fixed;
@@ -20,7 +20,7 @@ a {
   -webkit-backdrop-filter: blur(10px); /* 兼容 Safari */
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* 添加阴影 */
   border: 1px solid rgba(255, 255, 255, 0.3); /* 边框 */
-  z-index: 99;
+  z-index: 1000;
 }
 
 .avatar-setting {
@@ -41,7 +41,7 @@ a {
 }
 
 .header-avatar {
-  transform: translate(calc(50vw - 10px - 64px - 50%), 80%);
+  transform: translate(calc(50vw - 10px - 54px - 50%), 80%); /* 50vw - padding*2 - width*1.5 - width/2 */
   scale: 1.5;
   border-radius: 50%;
   z-index: 9999;

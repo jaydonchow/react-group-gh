@@ -4,13 +4,14 @@
 }
 
 .timeline-item {
-  background-color: #fefefe;
+  background-color: #fefefe66;
   padding: 10px;
   border-radius: 16px;
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-bottom: 20px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 
 .timeline-item .adm-tag {
@@ -38,4 +39,8 @@
 
 .image-preview-mask {
   background-color: rgba(0, 0, 0, 0.85) !important;
+}
+.no-more {
+  text-align: center;
+  color: #808080;
 }
