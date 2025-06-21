@@ -1,8 +1,78 @@
-import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import "./style.scss";
-import useMouseScroll from "@/component/hooks/useMouseScroll";
+import EmojiCategory from "./EmojiCategory";
+import EmojiGroup from "./EmojiGroup";
+
 // https://emojihub.yurace.pro/api/all
+function getEmojiData() {
+  function handleData(emojiData) {
+    const maps = {};
+    const category = [];
+    emojiData.forEach((emo) => {
+      if (!Object.keys(maps).includes(emo.category)) {
+        category.push(emo.category);
+        Object.assign(maps, {
+          [emo.category]: [],
+        });
+      }
+
+      const skin = skinTone[emo.htmlCode[1]]; // Dark
+      if (emo.htmlCode.length > 1 && skin) {
+        // 组合形
+        const target = maps[emo.category].find((e) => e.htmlCode[0] === emo.htmlCode[0]);
+        // htmlSkin： {Dark: "&#127999;"}
+        if (target) {
+          if (target.htmlSkin) {
+            target.htmlSkin[skin] = emo.htmlCode[1];
+          } else {
+            target.htmlSkin = {
+              [skin]: emo.htmlCode[1]
+            };
+          }
+          //
+          if (target.unicodeSkin) {
+            target.unicodeSkin[skin] = emo.unicode[1];
+          } else {
+            target.unicodeSkin = {
+              [skin]: emo.unicode[1]
+            };
+          }
+        }
+      } else {
+        maps[emo.category].push(emo);
+      }
+    });
+    const result = {
+      category,
+      maps,
+    };
+    localStorage.setItem("emoji_data", JSON.stringify(result));
+    return result;
+  }
+
+  return new Promise((resolve, reject) => {
+    let emojiData = [];
+    const emoji_local_data = localStorage.getItem("emoji_data");
+    if (emoji_local_data) {
+      emojiData = JSON.parse(emoji_local_data);
+      resolve(emojiData);
+    } else {
+      fetch("https://emojihub.yurace.pro/api/all").then((res) => {
+        if (res.status === 200) {
+          res.json().then((data) => {
+            // resolve(data);
+            resolve(handleData(data));
+          });
+        } else {
+          resolve({
+            category: [],
+            maps: {},
+          });
+        }
+      });
+    }
+  });
+}
 
 /**
 [{
@@ -24,112 +94,72 @@ import useMouseScroll from "@/component/hooks/useMouseScroll";
   "flags"
 ]
  */
-const gap = 10;
-export default (props) => {
-  const { limit = 10, multiple, onSelect } = props;
 
+let skinTone = {
+  "&#127999;": "Dark",
+  "&#127998;": "Medium_Dark:",
+  "&#127997;": "Medium",
+  "&#127996;": "Medium_Light",
+  "&#127995;": "Light",
+};
+
+export default (props) => {
+  const {
+    onSelect,
+    categoryNames,
+    layout = {
+      columns: 5, // 列
+      rows: 7,
+      gap: 10,
+      cellSize: 40,
+      direction: "top", // top bottom left right
+    },
+  } = props;
   const [selected, setSelected] = useState([]);
 
   const [emojiMaps, setEmojiMaps] = useState({});
   const [category, setCategory] = useState([]);
 
   const [active, setActive] = useState("");
-  const [width, setWidth] = useState(0);
 
-  useMouseScroll({
-    selector: ".emoji-category-swiper",
-    direction: "all",
-  });
+  const injectStyle = useMemo(() => {
+    console.log(layout);
+    const { columns, rows, gap, cellSize } = layout;
+    return {
+      "--cell-size": cellSize + "px",
+      "--gap": gap + "px",
+      "--width": cellSize * rows + "px",
+      "--height": cellSize * columns + "px",
+    };
+  }, layout);
 
   async function fetchEmojiData() {
-    let emojiData = [];
-    const emoji_local_data = localStorage.getItem("emoji_data");
-    if (emoji_local_data) {
-      emojiData = JSON.parse(emoji_local_data);
-    } else {
-      const result = await axios("https://emojihub.yurace.pro/api/all", {
-        method: "get",
-      });
-      emojiData = result.data;
-      localStorage.setItem("emoji_data", JSON.stringify(emojiData));
-    }
-    const maps = {};
-    const category = [];
-    emojiData.forEach((emo) => {
-      if (!Object.keys(maps).includes(emo.category)) {
-        category.push(emo.category);
-        Object.assign(maps, {
-          [emo.category]: [],
-        });
-      }
-      maps[emo.category].push(emo);
-    });
-    setCategory(category);
-    setActive(category[0]);
-    setEmojiMaps(maps);
+    const result = await getEmojiData();
+    setCategory(result.category);
+    setActive(result.category[0]);
+    setEmojiMaps(result.maps);
   }
 
   useEffect(() => {
     fetchEmojiData();
   }, []);
 
-  useEffect(() => {
-    let _width = 0;
-    const container = document.querySelector(".emoji-category-container");
-    [...container.children].forEach((child) => {
-      _width += child.clientWidth;
-    });
-    _width = _width + (gap * container.children.length - 1);
-    setWidth(_width);
-  }, [category]);
-
-  function handleSelectEmoji(data) {
-    const unicode = data.unicode.map((code) => code.replace("U+", "0x"));
-    const result = String.fromCodePoint(...unicode);
-    console.log(data.unicode, result); // 0x1F435
-
-    if (multiple) {
-      const value = [...selected, result].slice(0, limit);
-      setSelected(value);
-      onSelect(value.join(""));
-    } else {
-      setSelected(result);
-      onSelect(result);
-    }
-  }
-
   return (
-    <div className="emoji-select">
-      <div className="emoji-category-swiper">
-        <div className="emoji-category-container" style={{ width, gap }}>
-          {category.map((cate) => {
-            return (
-              <div
-                key={cate}
-                className={`category-item ${active === cate ? "active" : ""}`}
-                onClick={() => {
-                  setActive(cate);
-                }}
-              >
-                {cate}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-      <div className="emoji-container">
-        {(emojiMaps[active] || []).map((emoji) => {
-          return (
-            <div
-              key={emoji.name}
-              className="emoji-item"
-              dangerouslySetInnerHTML={{ __html: emoji.htmlCode.join("") }}
-              onClick={() => {
-                handleSelectEmoji(emoji);
-              }}
-            ></div>
-          );
-        })}
+    <div className="emoji_select" style={{ ...injectStyle }}>
+      <EmojiCategory
+        {...{
+          category,
+          gap: layout.gap,
+        }}
+        categoryNames={categoryNames}
+        value={active}
+        onChange={(value) => {
+          setActive(value);
+        }}
+      ></EmojiCategory>
+
+      <div className="emoji_container">
+        <EmojiGroup data={emojiMaps[active] || []} onSelect={onSelect}></EmojiGroup>
       </div>
     </div>
   );

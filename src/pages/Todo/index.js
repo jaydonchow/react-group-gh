@@ -30,9 +30,12 @@ const AddItem = () => {
   const [visible, setVisible] = useState(false);
 
   const [title, setTitle] = useState("");
-  const [icon, setIcon] = useState("");
+  const [icon, setIcon] = useState();
   const [includeTag, setIncludeTag] = useState();
   const { category } = store;
+
+  const displayName = ["人物", "动物与自然", "食物", "旅行", "活动", "工具", "标志", "旗帜"];
+
   const fetchAddCategoryItem = (label) => {
     addCategoryItem({
       label: label,
@@ -43,7 +46,7 @@ const AddItem = () => {
   };
 
   const handleAddItem = () => {
-    
+
   }
 
   const passed = useMemo(() => {
@@ -58,12 +61,12 @@ const AddItem = () => {
           content={
             <div>
               <EmojiSelect
-                multiple={false}
                 value={icon}
                 onSelect={(value) => {
                   setIcon(value);
                   setVisible(false);
                 }}
+                categoryNames={displayName}
               ></EmojiSelect>
             </div>
           }
@@ -79,6 +82,7 @@ const AddItem = () => {
           描述<span style={{ color: "red" }}>*</span>
         </div>
         <Input
+          size='large'
           placeholder="这是什么日子？"
           value={title}
           onChange={(e) => {

@@ -58,7 +58,7 @@ export default () => {
           setEditData(null);
         }}
         style={{
-          "--after-bottom": "calc(-100vh + 50px + 20px)",
+          "--after-bottom": "calc(-80vh + 50px + 20px)",
         }}
       ></FloatingButton>
       <Popup
@@ -71,7 +71,7 @@ export default () => {
         }}
         position="bottom"
         bodyStyle={{
-          height: "100vh",
+          height: "80vh",
           background: "#f0f0f0",
         }}
       >

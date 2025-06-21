@@ -5,7 +5,7 @@ const readline = require("readline");
 // 配置参数
 const sourcePath = "E:\\Code\\react-group"; // 替换为源目录路径
 const targetPath = "E:\\Code\\react-group-gh"; // 替换为目标目录路径
-const whiteList = [".git", "node_modules", ".next", ".vscode", "out"]; // 白名单配置（相对路径）
+const whiteList = [".git", "node_modules", ".next", ".vscode", "out", "lib"]; // 白名单配置（相对路径）
 // 创建命令行交互接口
 const rl = readline.createInterface({
   input: process.stdin,

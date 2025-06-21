@@ -34,6 +34,7 @@ export default (props) => {
       <div className="modal-inner-control">
         <div className="emoji">✍️</div>
         <Input.TextArea
+          size='large'
           value={form.description}
           onChange={(e) => {
             form.setValue({
@@ -48,6 +49,7 @@ export default (props) => {
         />
         <div className="emoji">⏱️</div>
         <DatePicker
+          size='large'
           variant={"filled"}
           allowClear={false}
           value={dayjs(form.dateValue)}
