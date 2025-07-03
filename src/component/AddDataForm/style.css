@@ -1,14 +1,14 @@
 .modal-inner-content {
   padding: 20px;
+  height: 75vh;
   background-color: #f0f0f0;
-
 }
 .modal-inner-control {
   /* margin-top: 50px; */
   display: flex;
   flex-direction: column;
   justify-content: start;
-  gap: 20px;
+  gap: 10px;
 }
 
 .modal-inner-footer {
@@ -29,5 +29,5 @@
 }
 
 .emoji {
-  font-size: 40px;
+  font-size: 30px;
 }

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { ErrorBlock, Toast, Popup } from "antd-mobile";
-import { SetOutline, AddOutline } from "antd-mobile-icons";
 
 import AddDataForm from "@/component/AddDataForm";
 import TimelineContent from "@/component/TimelineContent";
-import { addNoteItem, queryByUserId, updateNoteItem, deleteNoteItem, getUserProfile } from "../api/index";
+import { addNoteItem, queryByUserId, updateNoteItem, deleteNoteItem, getUserProfile } from "@/api/index";
 import Header from "@/component/Header";
 import FloatingButton from "@/component/FloatingButton";
+import { Popup, Empty, Toast } from "@nutui/nutui-react";
+import EmptySvg from '@/assets/empty.svg';
 export default () => {
   const [visible, setVisible] = useState(false);
   const [isFirstLoad, setIsFirstLoad] = useState(0);
@@ -35,7 +35,14 @@ export default () => {
     <div>
       <Header></Header>
       {dataList.length === 0 ? (
-        <ErrorBlock status="empty" style={{ marginTop: 40 }} />
+        <Empty
+          style={{
+            marginTop: 120,
+          }}
+          image={EmptySvg}
+          title="找不到数据"
+          description="快点记下你的生活痕迹吧！"
+        />
       ) : (
         <TimelineContent
           isFirstLoad={isFirstLoad === 1}
@@ -43,9 +50,7 @@ export default () => {
           onDeleteFn={(id) => {
             deleteNoteItem(id).then(() => {
               fetchData();
-              Toast.show({
-                content: "删除成功",
-              });
+              Toast.show("删除成功");
             });
           }}
           onEditFn={handleEdit}
@@ -62,17 +67,15 @@ export default () => {
         }}
       ></FloatingButton>
       <Popup
+        closeable
         visible={visible}
+        title="标题"
+        position="bottom"
         onMaskClick={() => {
           setVisible(false);
         }}
         onClose={() => {
           setVisible(false);
-        }}
-        position="bottom"
-        bodyStyle={{
-          height: "80vh",
-          background: "#f0f0f0",
         }}
       >
         <AddDataForm

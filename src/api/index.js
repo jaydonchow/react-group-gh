@@ -1,4 +1,4 @@
-import { Toast } from "antd-mobile";
+import { Toast } from "@nutui/nutui-react";
 import Compressor from "compressorjs";
 import AV from "leancloud-storage";
 
@@ -72,9 +72,7 @@ export async function updateNoteItem(data) {
   note.set("dateValue", data.dateValue);
   note.set("fileList", data.fileList);
   await note.save();
-  Toast.show({
-    content: "修改成功",
-  });
+  Toast.show("修改成功");
 }
 
 export async function deleteNoteItem(id) {
@@ -140,9 +138,7 @@ export async function updateUserProfile(data) {
   data.account && user.set("account", data.account);
   data.password && user.set("password", data.password);
   const result = await user.save();
-  Toast.show({
-    content: "修改成功",
-  });
+  Toast.show("修改成功");
   return result;
 }
 

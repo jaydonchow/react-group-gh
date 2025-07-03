@@ -1,4 +1,4 @@
-import { Popup } from "antd-mobile";
+import { Popup } from "@nutui/nutui-react";
 import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 
@@ -20,7 +20,7 @@ const PopupContainer = forwardRef((initProps, ref) => {
   }, []);
 
   return (
-    <Popup visible={visible} {...props} getContainer={() => document.getElementById("popup-root")}>
+    <Popup visible={visible} {...props} portal={() => document.getElementById("popup-root")}>
       {content}
     </Popup>
   );

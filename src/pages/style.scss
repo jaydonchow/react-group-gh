@@ -1,5 +1,15 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
-
+:root {
+  --nutui-empty-background-color: transparent;
+  --nutui-popover-font-size: 14px;
+  --nutui-tag-padding: 12px;
+  --nutui-tag-font-size: 14px;
+  --nutui-color-primary: #9d4bfa;
+  --nutui-color-primary-stop-1: #9d4bfc;
+  --nutui-color-primary-stop-2: #8e2cff;
+  --nutui-button-primary-disabled: #edadff;
+  --main-color: #9d4bfa;
+}
 html,
 body {
   padding: 0;
@@ -28,21 +38,24 @@ img {
 }
 
 .app-wrapper {
-  margin: 20px 10px;
+  // margin: 20px 10px;
 }
 
 .bottom-tab-bar {
   position: fixed;
   bottom: 10px;
-  width: calc(100vw - 20px);
+  width: 100%;
   // transform: translate(10px);
   border-radius: 40px;
-  background: rgba(0, 0, 0, 0.2); /* 半透明背景 */
-  backdrop-filter: blur(10px); /* 毛玻璃模糊效果 */
-  -webkit-backdrop-filter: blur(10px); /* 兼容 Safari */
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* 添加阴影 */
-  border: 1px solid rgba(255, 255, 255, 0.3); /* 边框 */
+  background: rgba(0, 0, 0, 0.2) !important; /* 半透明背景 */
+  backdrop-filter: blur(10px) !important; /* 毛玻璃模糊效果 */
+  -webkit-backdrop-filter: blur(10px) !important; /* 兼容 Safari */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important; /* 添加阴影 */
+  border: 1px solid rgba(255, 255, 255, 0.3) !important; /* 边框 */
   color: #fff;
   font-size: 1.2rem;
   text-align: center;
+  .nut-tabbar-item {
+    justify-content: space-evenly;
+  }
 }

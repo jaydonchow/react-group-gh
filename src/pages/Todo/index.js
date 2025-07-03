@@ -1,189 +1,170 @@
 import TagListBar from "@/component/TagListBar";
-import { NavBar, Popup, Space, Toast } from "antd-mobile";
-import { SetOutline, SmileOutline } from "antd-mobile-icons";
 import "./style.scss";
 import FloatingButton from "@/component/FloatingButton";
-import { useEffect, useMemo, useState } from "react";
-import { Button, Input, Popover } from "antd";
-import TagRadio from "@/component/TagListBar/TagRadio";
-import { addCategoryItem, queryAllCategory } from "@/api/todo";
-import { useContainer } from "@/component/hooks/useContainer";
-import EmojiSelect from "@/component/EmojiSelect";
+import { useMemo, useState } from "react";
+import { NavBar, Popover, Empty, Dialog, Toast } from "@nutui/nutui-react";
+import { SettingOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
+import AddItem from "./AddItem";
+import { useCategoryStore, useTodoItemStore } from "./utilHooks";
+import EmptySvg from "@/assets/empty.svg";
+import { useActionSheet, usePopup } from "@/component/taroUtils";
+import { deleteTodoItem } from "@/api/todo";
 
-function fetchQueryAllCategory(dispatch) {
-  queryAllCategory().then((res) => {
-    dispatch({
-      type: "CATEGORY",
-      payload: res.map((r) => {
-        return {
-          label: r.label,
-          value: r.id,
-        };
-      }),
-    });
+export default () => {
+  const [category, refreshCategory] = useCategoryStore();
+  const [todoItems, refreshTodoItems] = useTodoItemStore();
+
+  const [activeTagBar, setActiveTagBar] = useState("ALL");
+  const [settingShow, setSettingShow] = useState(false);
+
+  const { actionContainer, actionOpen } = useActionSheet([
+    {
+      title: "修改",
+      key: "edit",
+    },
+    {
+      title: "删除",
+      key: "delete",
+      danger: true,
+    },
+  ]);
+
+  const filterTodoList = useMemo(() => {
+    if (activeTagBar === "ALL") {
+      return todoItems;
+    } else {
+      return todoItems.filter((item) => {
+        return item.tagId === activeTagBar;
+      });
+    }
+  }, [activeTagBar, todoItems]);
+
+  const { popupContainer, popupOpen, popupClose } = usePopup({
+    style: { height: 675 },
+    position: "bottom",
+    portal: () => document.body,
   });
-}
 
-const AddItem = () => {
-  const { store, dispatch } = useContainer();
-
-  const [visible, setVisible] = useState(false);
-
-  const [title, setTitle] = useState("");
-  const [icon, setIcon] = useState();
-  const [includeTag, setIncludeTag] = useState();
-  const { category } = store;
-
-  const displayName = ["人物", "动物与自然", "食物", "旅行", "活动", "工具", "标志", "旗帜"];
-
-  const fetchAddCategoryItem = (label) => {
-    addCategoryItem({
-      label: label,
-      order: 1,
-    }).then((res) => {
-      fetchQueryAllCategory(dispatch);
+  const handleClickTodoItem = (item) => {
+    actionOpen({
+      onSelect: ({ key }) => {
+        if (key === "edit") {
+          popupOpen(
+            <AddItem
+              type={"edit"}
+              defaultValue={item}
+              onConfirm={() => {
+                refreshTodoItems();
+                popupClose();
+              }}
+            ></AddItem>
+          );
+        }
+        if (key === "delete") {
+          Dialog.alert({
+            content: "确定删除该日子吗？",
+            onConfirm() {
+              deleteTodoItem(item.id)
+                .then((res) => {
+                  refreshTodoItems();
+                })
+                .catch((err) => {
+                  Toast.show(err);
+                });
+            },
+          });
+        }
+      },
     });
   };
 
-  const handleAddItem = () => {
-
-  }
-
-  const passed = useMemo(() => {
-    return title && includeTag;
-  }, [title, includeTag]);
-
-  return (
-    <div className="todo-add-item-form">
-      <div className="icon">
-        <Popover
-          open={visible}
-          content={
-            <div>
-              <EmojiSelect
-                value={icon}
-                onSelect={(value) => {
-                  setIcon(value);
-                  setVisible(false);
-                }}
-                categoryNames={displayName}
-              ></EmojiSelect>
-            </div>
-          }
-          trigger="click"
-          placement="bottom"
-          onOpenChange={() => setVisible(true)}
-        >
-          <span>{icon ? icon : <SmileOutline />}</span>
-        </Popover>
-      </div>
-      <div>
-        <div>
-          描述<span style={{ color: "red" }}>*</span>
-        </div>
-        <Input
-          size='large'
-          placeholder="这是什么日子？"
-          value={title}
-          onChange={(e) => {
-            setTitle(e.target.value);
-          }}
-        ></Input>
-      </div>
-      <div className="category-select">
-        <div>
-          分类<span style={{ color: "red" }}>*</span>
-        </div>
-        <TagRadio
-          options={category}
-          onChange={(value) => {
-            setIncludeTag(value);
-          }}
-          value={includeTag}
-          onAdd={(label) => {
-            fetchAddCategoryItem(label);
-          }}
-        ></TagRadio>
-      </div>
-      <Button type="primary" size="large" block disabled={!passed} onClick={handleAddItem}>
-        添加
-      </Button>
-    </div>
-  );
-};
-
-export default () => {
-  const { store, dispatch } = useContainer();
-  const { category } = store;
-
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    fetchQueryAllCategory(dispatch);
-  }, []);
-
-  const todoList = [
-    {
-      id: "1",
-      icon: "🎂",
-      desc: "10的生日",
-      date: "1997/08/03",
-    },
-    {
-      id: "2",
-      icon: "🎂",
-      desc: "10的生日",
-      date: "1997/08/03",
-    },
-  ];
-
   // const { category } = store;
   return (
-    <div>
+    <div className="todo-page">
+      {popupContainer}
+      {actionContainer}
       <NavBar
-        backIcon={false}
-        left={<span style={{ fontSize: 30, fontWeight: 700 }}>待办清单</span>}
-        right={<SetOutline fontSize={24} />}
+        right={
+          <Popover
+            visible={settingShow}
+            theme="dark"
+            location="bottom-right"
+            onClick={() => {
+              setSettingShow(!settingShow);
+            }}
+            style={{
+              "--nutui-popover-padding": "12px",
+              "--nutui-color-mask": "#424242",
+            }}
+            list={[
+              {
+                key: "key1",
+                name: (
+                  <div style={{ padding: "10px" }}>
+                    <Link to="/todo/tag_manager" style={{ color: "#fff" }}>
+                      标签管理
+                    </Link>
+                  </div>
+                ),
+              },
+            ]}
+          >
+            <SettingOutlined style={{ fontSize: 24 }} />
+          </Popover>
+        }
+        left={<span style={{ fontSize: 20, fontWeight: 700 }}>待办清单</span>}
+        back={null}
         className="todo-nav-bar"
         style={{
-          "--height": 60,
+          height: 80,
         }}
-      ></NavBar>
-      <div style={{ marginTop: 80 }}>
-        <TagListBar list={category}></TagListBar>
+      />
+      <div>
+        <TagListBar
+          list={category}
+          active={activeTagBar}
+          onChange={(v) => {
+            console.log(v);
+            setActiveTagBar(v);
+          }}
+        ></TagListBar>
       </div>
       <div className="todo-item-container">
-        {todoList.map((item) => {
+        {filterTodoList.map((item) => {
           return (
-            <div className="todo-item" key={item.id}>
+            <div className="todo-item" key={item.id} onClick={() => handleClickTodoItem(item)}>
               <div className="icon">{item.icon}</div>
               <div className="desc">
                 <div>{item.desc}</div>
                 <div>{item.date}</div>
               </div>
               <div className="upcoming">
-                <div>136</div>
+                <div>{item.diffDay}</div>
                 <div>天后</div>
               </div>
             </div>
           );
         })}
+        {filterTodoList.length === 0 && <Empty title="空空如也~" imageSize={100} image={EmptySvg} />}
       </div>
       <FloatingButton
-        onClick={(changeTo) => {
-          if (changeTo === "close") {
-            setVisible(true);
-          } else {
-            setVisible(false);
-          }
-        }}
-        style={{
-          "--after-bottom": "calc(-50vh + 50px)",
+        className="floating-button"
+        onClick={() => {
+          popupOpen(
+            <AddItem
+              type={"add"}
+              defaultValue={{
+                tagId: activeTagBar,
+              }}
+              onConfirm={() => {
+                refreshTodoItems();
+                popupClose();
+              }}
+            ></AddItem>
+          );
         }}
       ></FloatingButton>
-      <Popup visible={visible} bodyStyle={{ height: "50vh" }} closeOnMaskClick={true}>
-        <AddItem></AddItem>
-      </Popup>
     </div>
   );
 };

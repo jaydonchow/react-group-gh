@@ -17,6 +17,9 @@ const reducer = produce((store, action) => {
     case "CATEGORY":
       store.category = payload;
       break;
+    case "TODO_ITEMS":
+      store.todoItems = payload;
+      break;
     default:
       throw new Error();
   }
@@ -28,6 +31,7 @@ export function Provider({ children }) {
     systemTheme: "dark",
     userData: null,
     category: [],
+    todoItems: [],
     isDesktop: true,
   });
 

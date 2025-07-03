@@ -1,10 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Tag, Image, Popover, ImageViewer, Skeleton } from "antd-mobile";
-import { MoreOutline, EditSFill, DeleteOutline, ClockCircleOutline } from "antd-mobile-icons";
 import birdImage from "@/assets/bird.jpg";
 
 import "./style.css";
+import { Skeleton, Image, ImagePreview, Tag } from "@nutui/nutui-react";
+import { ClockCircleOutlined, DeleteOutlined, EditOutlined, MoreOutlined } from "@ant-design/icons";
+import Tooltip from "rc-tooltip";
 
 function isEmpty(value) {
   if (value === null) {
@@ -23,85 +24,65 @@ function isEmpty(value) {
 export default (props) => {
   const { dataList, onDeleteFn, onEditFn, isFirstLoad } = props;
 
+  const [previewList, setPreviewList] = useState([]);
+
   const actions = [
-    { key: "edit", icon: <EditSFill />, text: "编辑" },
+    {
+      key: "edit",
+      icon: <EditOutlined />,
+      name: "编辑",
+    },
     {
       key: "delete",
-      icon: <DeleteOutline color="red" />,
-      text: <span style={{ color: "red" }}> 删除</span>,
+      icon: <DeleteOutlined style={{ color: "red" }} />,
+      name: <span style={{ color: "red" }}> 删除</span>,
     },
   ];
 
+  console.log(dataList);
+
   return (
-    <div className="timeline-wrapper">
+    <div className="timeline-wrapper" id="abc">
       {isFirstLoad && (
         <div>
-          <Skeleton
-            animated
-            style={{
-              "--height": "200px",
-              "--border-radius": "8px",
-              marginBottom: 20,
-            }}
-          />
-          <Skeleton
-            animated
-            style={{
-              "--height": "200px",
-              "--border-radius": "8px",
-              marginBottom: 20,
-            }}
-          />
-          <Skeleton
-            animated
-            style={{
-              "--height": "200px",
-              "--border-radius": "8px",
-              marginBottom: 20,
-            }}
-          />
+          <Skeleton rows={3} width={"100%"} height={200} style={{ marginBottom: 20 }} />
+          <Skeleton rows={3} width={"100%"} height={200} style={{ marginBottom: 20 }} />
+          <Skeleton rows={3} width={"100%"} height={200} style={{ marginBottom: 20 }} />
         </div>
       )}
-
       {(dataList || []).map((v) => {
         return (
-          <div className="timeline-item">
+          <div className="timeline-item" id={`id-${v.id}`} key={v.id}>
             <div className="first-section">
               <Tag
-                color="#2db7f5"
+                background="#2db7f5"
+                color="#fff"
                 round
                 style={{ fontSize: 14 }}
                 onClick={() => {
                   // openPopup();
                 }}
               >
-                <ClockCircleOutline style={{ fontSize: 14 }} />
+                <ClockCircleOutlined style={{ fontSize: 14 }} />
                 &nbsp;&nbsp;
                 {v.dateValue}
               </Tag>
-              <Popover.Menu
-                style={{ "--arrow-size": 0 }}
-                actions={actions}
-                trigger="click"
-                placement="bottom-end"
-                onAction={(act) => {
-                  console.log(act);
-                  if (act.key === "delete") {
+              <ActionMenu
+                list={actions}
+                targetId={`abc`}
+                onSelect={(key) => {
+                  const act = key;
+                  if (act === "delete") {
                     onDeleteFn(v.id);
-                    // console.log(v);
                   }
-                  if (act.key === "edit") {
+                  if (act === "edit") {
                     onEditFn(v);
                   }
                 }}
               >
-                <div>
-                  <MoreOutline fontSize={18} />
-                </div>
-              </Popover.Menu>
+                <MoreOutlined style={{ fontSize: 18 }} />
+              </ActionMenu>
             </div>
-            {/* <div style={{ fontSize: "18", fontWeight: 700 }}>{v.title}</div> */}
-            <div>{v.description}</div>
             {!isEmpty(v.fileList) && (
               <div className="image-preview">
                 {v.fileList.map((l, index) => {
@@ -110,26 +91,89 @@ export default (props) => {
                       key={index}
                       src={l.url}
                       width={64}
-                      fit="cover"
+                      fit="fill"
                       style={{ borderRadius: 8 }}
-                      fallback={<img src={birdImage}></img>}
+                      error={<img src={birdImage}></img>}
                       onClick={() => {
-                        const urlList = v.fileList.map((f) => f.url);
-                        ImageViewer.Multi.show({
-                          images: urlList,
-                          defaultIndex: index,
-                          classNames: { mask: "image-preview-mask" },
-                        });
+                        const urlList = v.fileList.map((f) => ({
+                          src: f.url,
+                        }));
+                        setPreviewList(urlList);
                       }}
                     />
                   );
                 })}
               </div>
             )}
+            <div>{v.description}</div>
           </div>
         );
       })}
       <div className="no-more">没有更多啦~</div>
+      <ImagePreview
+        images={previewList}
+        visible={previewList.length > 0}
+        onClose={() => setPreviewList([])}
+        indicator
+      />
     </div>
   );
 };
+
+function ActionMenu(props) {
+  const { children, list, onSelect } = props;
+  const [show, setShow] = useState(false);
+  return (
+    <Tooltip
+      visible={show}
+      showArrow={false}
+      trigger={"click"}
+      placement="bottomRight"
+      getTooltipContainer={(node) => node}
+      zIndex={999}
+      styles={{
+        root: {
+          opacity: 1,
+          background: "transparent",
+        },
+        body: {
+          border: "1px solid #f1f4f7",
+          borderRadius: "10px",
+          padding: "4px",
+          width: "80px",
+          fontSize: "16px",
+        },
+      }}
+      overlay={
+        <div>
+          {list.map((item) => {
+            return (
+              <div
+                key={item.key}
+                onClick={() => {
+                  onSelect(item.key);
+                  setShow(false);
+                }}
+              >
+                {item.icon}
+                {item.name}
+              </div>
+            );
+          })}
+        </div>
+      }
+    >
+      <div
+        tabIndex={0}
+        onClick={() => {
+          setShow(true);
+        }}
+        onBlur={() => {
+          setShow(false);
+        }}
+      >
+        {children}
+      </div>
+    </Tooltip>
+  );
+}

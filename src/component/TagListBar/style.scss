@@ -42,9 +42,10 @@
   text-align: center;
   padding: 6px 10px;
   font-size: 14px;
+  white-space: nowrap;
   cursor: pointer;
   &.active {
-    background-color: #007aff;
+    background-color: var(--main-color);
     color: #fff;
   }
   &.ln-tag-add {

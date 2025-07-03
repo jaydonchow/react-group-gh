@@ -1,18 +1,16 @@
-import { useState } from "react";
+import { PlusCircleFilled, PlusOutlined } from "@ant-design/icons";
 import "./style.scss";
 export default (props) => {
-  const { onClick, style } = props;
-  const [changeTo, setChangeTo] = useState("add");
+  const { onClick, style = {} } = props;
   return (
     <div
-      className={`bottom-button ${changeTo === "close" ? "change-to-close-btn" : "change-to-add-btn"}`}
       style={style}
+      className="floating-button"
       onClick={() => {
-        setChangeTo(changeTo === "add" ? "close" : "add");
-        onClick(changeTo === "add" ? "close" : "add");
+        onClick();
       }}
     >
-      <span style={{ fontSize: 40 }}>➕</span>
+      <PlusOutlined></PlusOutlined>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { message } from "antd";
+import { Notify } from "@nutui/nutui-react";
 import axios from "axios";
 
 const request = axios.create({
@@ -26,7 +26,12 @@ export default async (payload) => {
     return await request(payload);
   } catch (error) {
     console.error(payload.url, error.response?.data);
-    message.error(error.response.data.message);
+    Notify.text(error.response.data.message, {
+      style: {
+        "--nutui-notify-text-color": "#FFFFFF",
+        "--nutui-notify-background-color": "#ff0f23",
+      },
+    });
     return Promise.resolve({
       data: [],
     });

@@ -1,5 +1,4 @@
-import { Toast } from "antd-mobile";
-import Compressor from "compressorjs";
+import { Toast } from "@nutui/nutui-react";
 import AV from "leancloud-storage";
 
 AV.init({
@@ -8,10 +7,28 @@ AV.init({
   serverURL: "https://vtopa8ot.lc-cn-n1-shared.com",
 });
 
+export async function updateCategoryItem(data) {
+  return new Promise(async (resolve, reject) => {
+    const category = AV.Object.createWithoutData("Category", data.id);
+    if (data.label.trim()) {
+      category.set("label", data.label);
+    }
+    if (data.order) {
+      category.set("order", data.order);
+    }
+    await category.save();
+    resolve(true);
+  });
+}
+
 export function addCategoryItem(data) {
   return new Promise((resolve, reject) => {
     const Category = AV.Object.extend("Category");
     const category = new Category();
+
+    if (!data.label.trim()) {
+      return;
+    }
 
     category.set("userId", data.userId || "1");
     // notes.set("title", data.title);
@@ -70,8 +87,10 @@ export function addTodoItem(data) {
     const todo = new Todo();
 
     todo.set("userId", data.userId || "1");
-    todo.set("label", data.label);
-    todo.set("order", data.order || 1);
+    todo.set("icon", data.icon || "~");
+    todo.set("desc", data.desc || "");
+    todo.set("date", data.date || "");
+    todo.set("tagId", data.tagId || "");
 
     todo.save().then(
       (cate) => {
@@ -88,6 +107,84 @@ export function addTodoItem(data) {
     );
   });
 }
+
+export async function updateTodoItem(data) {
+  console.log(data);
+  
+  const todo = AV.Object.createWithoutData("Todo", data.id);
+  const { userId, icon, desc, date, tagId } = data;
+  userId && todo.set("userId", userId);
+  icon && todo.set("icon", icon);
+  desc && todo.set("desc", desc);
+  date && todo.set("date", date);
+  tagId && todo.set("tagId", tagId);
+  return await todo.save();
+}
+
+export function queryAllTodoItems() {
+  const query = new AV.Query("Todo");
+  query.equalTo("userId", "1");
+  // query.get("68275067d3496c42466ad9c3").then
+  return new Promise((resolve, reject) => {
+    query
+      .find()
+      .then((item) => {
+        // todo 就是 objectId 为 582570f38ac247004f39c24b 的 Todo 实例
+        // const title = todo.get("title");
+        // const priority = todo.get("priority");
+        // // 获取内置属性
+        // const objectId = todo.id;
+        // const updatedAt = todo.updatedAt;
+        // const createdAt = todo.createdAt;
+        resolve(
+          item.map((n) => {
+            return {
+              ...n.attributes,
+              id: n.id,
+            };
+          })
+        );
+      })
+      .catch((err) => {
+        console.log("error:", err);
+      });
+  });
+}
+
+export async function deleteTodoItem(id) {
+  const todo = AV.Object.createWithoutData("Todo", id);
+  return await todo.destroy();
+}
+
+export async function deleteCategoryAndChildren(id) {
+  try {
+    const category = AV.Object.createWithoutData("Category", id);
+    await category.destroy();
+    const query = new AV.Query("Todo");
+    query.equalTo("userId", "1").equalTo("tagId", id);
+    const todoItems = await query.find();
+    return await AV.Object.destroyAll(todoItems);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function deleteCategoryAndTransferTo(id, newCateId) {
+  try {
+    const category = AV.Object.createWithoutData("Category", id);
+    await category.destroy();
+    const query = new AV.Query("Todo");
+    query.equalTo("userId", "1").equalTo("tagId", id);
+    const todoItems = await query.find();
+    todoItems.forEach((item) => {
+      item.set("tagId", newCateId);
+    });
+    return AV.Object.saveAll(todoItems);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 // -----------------------------------------
 export async function updateNoteItem(data) {
   const note = AV.Object.createWithoutData("Notes", data.id);
@@ -96,9 +193,7 @@ export async function updateNoteItem(data) {
   note.set("dateValue", data.dateValue);
   note.set("fileList", data.fileList);
   await note.save();
-  Toast.show({
-    content: "修改成功",
-  });
+  Toast.show("修改成功");
 }
 
 export async function deleteNoteItem(id) {
@@ -164,8 +259,6 @@ export async function updateUserProfile(data) {
   data.account && user.set("account", data.account);
   data.password && user.set("password", data.password);
   const result = await user.save();
-  Toast.show({
-    content: "修改成功",
-  });
+  Toast.show("修改成功");
   return result;
 }

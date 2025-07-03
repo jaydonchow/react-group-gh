@@ -27,10 +27,11 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  overflow: hidden;
   /* justify-content: space-between; */
 }
 
-.image-preview .adm-image {
+.image-preview .nut-image {
   flex: 1 1 calc(33.33% - 10px); /* 动态计算宽度，留出间隙 */
   min-width: 50px; /* 防止内容过小时挤压变形 */
   max-height: 162px;

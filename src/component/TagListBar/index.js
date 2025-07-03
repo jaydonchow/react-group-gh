@@ -5,9 +5,10 @@ const gap = 15;
 const padding = 10;
 
 export default (props) => {
-  const { list } = props;
-  const [activeKey, setActiveKey] = useState("ALL");
+  const { list, active, onChange } = props;
+  const [activeKey, setActiveKey] = useState(active || "ALL");
   const [width, setWidth] = useState(0);
+
   useEffect(() => {
     let _width = 0;
     const container = document.querySelector(".tag-list-bar .container");
@@ -32,7 +33,7 @@ export default (props) => {
         style={{
           gap: gap,
           padding: padding,
-          width: width
+          width: width,
         }}
       >
         {allList.map((item) => {
@@ -42,6 +43,7 @@ export default (props) => {
               className={`ln-tag-item ${item.value === activeKey ? "active" : ""}`}
               onClick={() => {
                 setActiveKey(item.value);
+                onChange(item.value);
               }}
             >
               {item.label}

@@ -1,19 +1,18 @@
-import { DatePicker, Input } from "antd";
-import { ImageUploader, Button, Toast } from "antd-mobile";
 import { useEffect, useState } from "react";
-import dayjs from "dayjs";
+// import dayjs from "dayjs";
 import "./style.css";
 import { mockUpload } from "@/api";
 import { useFormState } from "@/utils/hooks";
-
-export async function mockUploadFail() {
-  throw new Error("Fail to upload");
-}
+import { DatePicker, TextArea, Input, Button, Uploader } from "@nutui/nutui-react";
+import { format } from "../dateHelper";
 
 export default (props) => {
   const { inputData, onSave } = props;
+
+  const [show, setShow] = useState(false);
+
   const form = useFormState(() => {
-    const today = dayjs().format("YYYY-MM-DD");
+    const today = format(new Date());
     return {
       // title: "",
       description: "",
@@ -33,56 +32,68 @@ export default (props) => {
     <div className="modal-inner-content">
       <div className="modal-inner-control">
         <div className="emoji">✍️</div>
-        <Input.TextArea
-          size='large'
-          value={form.description}
-          onChange={(e) => {
+        <TextArea
+          plain={false}
+          placeholder="分享此刻的心情~"
+          maxLength={200}
+          showCount={true}
+          rows={10}
+          defaultValue={form.description}
+          onChange={(value) => {
             form.setValue({
-              description: e.target.value,
+              description: value,
             });
           }}
-          variant={"filled"}
-          placeholder="分享此刻的心情~"
-          autoSize={{ minRows: 5, maxRows: 10 }}
-          showCount
-          maxLength={200}
+          onBlur={() => console.log("blur")}
+          onFocus={() => console.log("focus")}
         />
         <div className="emoji">⏱️</div>
-        <DatePicker
-          size='large'
-          variant={"filled"}
-          allowClear={false}
-          value={dayjs(form.dateValue)}
-          onChange={(value, dateString) => {
-            form.setValue({
-              dateValue: dateString,
-            });
+        <Input
+          value={form.dateValue}
+          placeholder="请输入文本"
+          type="text"
+          readOnly={true}
+          onClick={() => {
+            setShow(true);
           }}
         />
         <div className="emoji">📷</div>
-        <ImageUploader
+        <Uploader
           value={form.fileList}
           onChange={(items) => {
             form.setValue({ fileList: items });
           }}
-          upload={mockUpload}
+          accept="image/*"
+          upload={(file) => mockUpload(file)}
           maxCount={3}
-          multiple={true}
-          className="my-image-uploader"
-          style={{ "--cell-size": "100px" }}
+          multiple
         />
       </div>
       <div className="modal-inner-footer">
         <Button
           block
-          color="primary"
-          fill="solid"
-          shape="rounded"
+          type="primary"
+          shape="round"
+          size="large"
           onClick={() => onSave(form.formValue, inputData ? "edit" : "add")}
         >
           保存
         </Button>
       </div>
+      <DatePicker
+        title="日期选择"
+        visible={show}
+        defaultValue={new Date(form.dateValue)}
+        showChinese
+        threeDimensional={true}
+        onCancel={() => setShow(false)}
+        onConfirm={(options, value) => {
+          form.setValue({
+            dateValue: value.join("-"),
+          });
+          setShow(false);
+        }}
+      />
     </div>
   );
 };
