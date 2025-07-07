@@ -10,7 +10,7 @@ node_modules
 /.vscode
 /.pnp
 .pnp.js
-
+yarn.lock
 # testing
 /coverage
 

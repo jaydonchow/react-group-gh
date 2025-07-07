@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import "./pages/style.scss";
+import "./app.scss";
 import { Tabbar } from "@nutui/nutui-react";
 import { Store, List, Phone } from "@nutui/icons-react";
 
