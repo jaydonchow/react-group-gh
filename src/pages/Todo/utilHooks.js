@@ -1,11 +1,10 @@
-import { addCategoryItem, queryAllCategory, queryAllTodoItems, updateCategoryItem } from "@/api/todo";
+import { queryAllCategory, queryAllTodoItems } from "@/api/todo";
 import { calcCountdown } from "@/component/dateHelper";
 import { useContainer } from "@/component/hooks/useContainer";
 import { useEffect, useState } from "react";
 
 function useCategoryStore() {
   const { dispatch, store } = useContainer();
-  const [data, setData] = useState();
   const [count, setCount] = useState(0);
 
   function fetchQueryAllCategory() {
@@ -22,7 +21,6 @@ function useCategoryStore() {
           type: "CATEGORY",
           payload: result,
         });
-        setData(result);
         resolve(result);
       });
     });
@@ -40,20 +38,26 @@ function useCategoryStore() {
     }
   }, [count]);
 
-  const refresh = () => {
-    setCount(count + 1);
+  const refresh = (freshData) => {
+    if (freshData) {
+      dispatch({
+        type: "CATEGORY",
+        payload: freshData,
+      });
+    } else {
+      setCount(count + 1);
+    }
   };
 
   if (store.category) {
     return [store.category, refresh];
   } else {
-    return [data, refresh];
+    return [[], refresh];
   }
 }
 
 function useTodoItemStore() {
   const { dispatch, store } = useContainer();
-  const [data, setData] = useState();
   const [count, setCount] = useState(0);
 
   function fetchQueryAllTodoItems() {
@@ -61,13 +65,15 @@ function useTodoItemStore() {
       queryAllTodoItems().then((res) => {
         const result = res
           .map((r) => {
+            const { diff, isExpired } = calcCountdown(r.date);
             return {
               icon: r.icon,
               desc: r.desc,
               date: r.date,
               tagId: r.tagId,
               id: r.id,
-              diffDay: calcCountdown(r.date),
+              diffDay: diff,
+              isExpired,
             };
           })
           .sort((a, b) => {
@@ -77,7 +83,6 @@ function useTodoItemStore() {
           type: "TODO_ITEMS",
           payload: result,
         });
-        setData(result);
         resolve(result);
       });
     });
@@ -102,7 +107,7 @@ function useTodoItemStore() {
   if (store.todoItems) {
     return [store.todoItems, refresh];
   } else {
-    return [data, refresh];
+    return [[], refresh];
   }
 }
 

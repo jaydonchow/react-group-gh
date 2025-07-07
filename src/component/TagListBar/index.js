@@ -5,9 +5,13 @@ const gap = 15;
 const padding = 10;
 
 export default (props) => {
-  const { list, active, onChange } = props;
-  const [activeKey, setActiveKey] = useState(active || "ALL");
+  const { list, active = "ALL", onChange } = props;
+  // const [activeKey, setActiveKey] = useState(active || "ALL");
   const [width, setWidth] = useState(0);
+
+  // useEffect(() => {
+  //   setActiveKey(active);
+  // }, [active]);
 
   useEffect(() => {
     let _width = 0;
@@ -36,14 +40,16 @@ export default (props) => {
           width: width,
         }}
       >
-        {allList.map((item) => {
+        {allList.map((item, index) => {
           return (
             <div
               key={item.value}
-              className={`ln-tag-item ${item.value === activeKey ? "active" : ""}`}
+              className={`ln-tag-item ${item.value === active ? "active" : ""}`}
               onClick={() => {
-                setActiveKey(item.value);
-                onChange(item.value);
+                // setActiveKey(item.value);
+                console.log(item.value);
+                
+                onChange(item.value, index);
               }}
             >
               {item.label}

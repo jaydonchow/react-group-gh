@@ -3,12 +3,16 @@ import {
   deleteCategoryAndChildren,
   deleteCategoryAndTransferTo,
   updateCategoryItem,
+  updateCategoryItemOrder,
 } from "@/api/todo";
 import { useActionSheet, useCategoryDialog, useInputDialog } from "@/component/taroUtils";
-import { ArrowLeftOutlined, DragOutlined } from "@ant-design/icons";
-import { Button, Cell, CellGroup, Dialog, NavBar } from "@nutui/nutui-react";
+import { ArrowLeftOutlined } from "@ant-design/icons";
+import { Button, CellGroup, NavBar } from "@nutui/nutui-react";
 import { useCategoryStore, useTodoItemStore } from "./utilHooks";
 import { useNavigate } from "react-router-dom";
+import { TouchBackend } from "react-dnd-touch-backend";
+import { DndProvider } from "react-dnd";
+import DragCard from "@/component/DragCard";
 
 export default () => {
   const [category, refresh] = useCategoryStore();
@@ -74,6 +78,31 @@ export default () => {
     });
   };
 
+  const moveCard = (dragIndex, hoverIndex) => {
+    const draggedCard = category[dragIndex];
+    // 创建新数组并移动卡片
+    const newCategory = [...category];
+    newCategory.splice(dragIndex, 1);
+    newCategory.splice(hoverIndex, 0, draggedCard);
+    refresh(newCategory);
+  };
+
+  const updateCategoryOrder = () => {
+    const orderMap = category.reduce((pre, cur, index) => {
+      let next = pre;
+      const key = pre[cur.id];
+      if (!key) {
+        next = Object.assign(pre, {
+          [cur.id]: index,
+        });
+      }
+      return next;
+    }, {});
+    updateCategoryItemOrder(orderMap).then((res) => {
+      refresh(res);
+    });
+  };
+
   if (category && category.length > 0) {
     return (
       <div>
@@ -93,54 +122,36 @@ export default () => {
           }
           onBackClick={(e) => navigate("/todo")}
         />
-
-        <CellGroup divider={false}>
-          {category.map((cate, index) => {
-            return (
-              <div style={{ display: "flex" }}>
-                <div style={{ width: "90%" }}>
-                  <Cell
-                    clickable
-                    onClick={() => {
-                      actionOpen({
-                        onSelect({ key }) {
-                          if (key === "rename") {
-                            renameCategory(cate);
-                          }
-                          if (key === "delete") {
-                            deleteCategory(cate);
-                          }
-                        },
-                      });
-                    }}
-                    radius={0}
-                    style={{
-                      padding: "20px",
-                      borderTop: "none",
-                      borderBottom: "1px solid #99999966",
-                    }}
-                    key={cate.value}
-                    title={cate.label}
-                  ></Cell>
-                </div>
-                <div
-                  style={{
-                    width: "10%",
-                    textAlign: "center",
-                    lineHeight: "60px",
-                    background: "#99999922",
-                    borderBottom: "1px solid #99999966",
+        <DndProvider backend={TouchBackend}>
+          <CellGroup divider={false}>
+            {category.map((cate, index) => {
+              // return CategoryItemRender(cate, index);
+              return (
+                <DragCard
+                  key={cate.id}
+                  id={cate.id}
+                  index={index}
+                  value={cate.value}
+                  label={cate.label}
+                  moveCard={moveCard}
+                  onItemClick={() => {
+                    actionOpen({
+                      onSelect({ key }) {
+                        if (key === "rename") {
+                          renameCategory(cate);
+                        }
+                        if (key === "delete") {
+                          deleteCategory(cate);
+                        }
+                      },
+                    });
                   }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                >
-                  <DragOutlined style={{ fontSize: 16 }} />
-                </div>
-              </div>
-            );
-          })}
-        </CellGroup>
+                  onDropEnd={updateCategoryOrder}
+                ></DragCard>
+              );
+            })}
+          </CellGroup>
+        </DndProvider>
 
         <Button
           block

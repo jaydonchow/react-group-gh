@@ -7,6 +7,28 @@ AV.init({
   serverURL: "https://vtopa8ot.lc-cn-n1-shared.com",
 });
 
+export async function updateCategoryItemOrder(data) {
+  try {
+    const query = new AV.Query("Category");
+    query.equalTo("userId", "1");
+    const category = await query.find();
+    category.forEach((item) => {
+      item.set("order", data[item.id]);
+    });
+    const result = await AV.Object.saveAll(category);
+    return result
+      .map((n) => {
+        return {
+          ...n.attributes,
+          id: n.id,
+        };
+      })
+      .sort((a, b) => a.order - b.order);
+  } catch (error) {
+    return [];
+  }
+}
+
 export async function updateCategoryItem(data) {
   return new Promise(async (resolve, reject) => {
     const category = AV.Object.createWithoutData("Category", data.id);
@@ -72,7 +94,7 @@ export function queryAllCategory() {
               ...n.attributes,
               id: n.id,
             };
-          })
+          }).sort((a, b) => a.order - b.order)
         );
       })
       .catch((err) => {
@@ -109,8 +131,6 @@ export function addTodoItem(data) {
 }
 
 export async function updateTodoItem(data) {
-  console.log(data);
-  
   const todo = AV.Object.createWithoutData("Todo", data.id);
   const { userId, icon, desc, date, tagId } = data;
   userId && todo.set("userId", userId);

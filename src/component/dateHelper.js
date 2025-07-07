@@ -30,19 +30,14 @@ const format = (input) => {
 };
 
 const calcCountdown = (target) => {
-  let today = dayjs();
+  let today = dayjs().startOf("day"); // 当天0点
   let targetDate = dayjs(target);
-
-  const isLeap = today.year() % 4 === 0;
-
-  today = today.year(1970);
-  targetDate = targetDate.year(1970);
-
-
-
-  const diff = Math.abs(targetDate.diff(today, "day"));
-
-  return isLeap ? diff - 1 : diff;
+  const thisYear = today.year();
+  targetDate = targetDate.year(thisYear);
+  const isExpired = today.isAfter(targetDate); // 今年是否已过 targetDate
+  targetDate = targetDate.year(isExpired ? thisYear + 1 : thisYear);
+  const diff = targetDate.diff(today, "day");
+  return { diff, isExpired };
 };
 
 export { format, calcCountdown };

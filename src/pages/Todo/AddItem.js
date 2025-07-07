@@ -1,7 +1,7 @@
 import "./style.scss";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import TagRadio from "@/component/TagListBar/TagRadio";
-import { addCategoryItem, addTodoItem, updateTodoItem } from "@/api/todo";
+import { addTodoItem, updateTodoItem } from "@/api/todo";
 import { useContainer } from "@/component/hooks/useContainer";
 import { Button, Input, Popup, DatePickerView } from "@nutui/nutui-react";
 import { SmileOutlined } from "@ant-design/icons";
@@ -17,11 +17,16 @@ const MyDatePicker = (props) => {
     return d;
   });
 
+  const beforeyears = new Date('1970-1-1')
+  const afteryears = new Date('2050-12-31')
+
   return (
     <>
       {/* <div>{format(selectValue)}</div> */}
       <div className="c-date-picker">
         <DatePickerView
+          startDate={beforeyears}
+          after100years={afteryears}
           defaultValue={selectValue}
           onChange={(_, values) => {
             const str = values.join("-");
@@ -31,7 +36,7 @@ const MyDatePicker = (props) => {
           style={{
             "--nutui-picker-item-height": "26px",
             "--nutui-picker-item-text-font-size": 16,
-            fontFamily: "Microsoft YaHei",
+            fontFamily: 'inherit'
           }}
         />
       </div>

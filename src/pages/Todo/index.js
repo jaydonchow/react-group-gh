@@ -1,8 +1,8 @@
 import TagListBar from "@/component/TagListBar";
 import "./style.scss";
 import FloatingButton from "@/component/FloatingButton";
-import { useMemo, useState } from "react";
-import { NavBar, Popover, Empty, Dialog, Toast } from "@nutui/nutui-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { NavBar, Popover, Empty, Dialog, Toast, Swiper, Image } from "@nutui/nutui-react";
 import { SettingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import AddItem from "./AddItem";
@@ -18,6 +18,8 @@ export default () => {
   const [activeTagBar, setActiveTagBar] = useState("ALL");
   const [settingShow, setSettingShow] = useState(false);
 
+  const swiperRef = useRef();
+
   const { actionContainer, actionOpen } = useActionSheet([
     {
       title: "修改",
@@ -30,15 +32,28 @@ export default () => {
     },
   ]);
 
-  const filterTodoList = useMemo(() => {
-    if (activeTagBar === "ALL") {
-      return todoItems;
-    } else {
-      return todoItems.filter((item) => {
-        return item.tagId === activeTagBar;
-      });
-    }
-  }, [activeTagBar, todoItems]);
+  const todoSwiperList = useMemo(() => {
+    const list = [
+      {
+        tagId: "ALL",
+        list: todoItems,
+      },
+    ];
+    const categoryTag = category.map((cate) => {
+      return {
+        tagId: cate.id,
+        list: [],
+      };
+    });
+    list.push(...categoryTag);
+    todoItems.forEach((item) => {
+      const l = list.find((i) => i.tagId === item.tagId);
+      if (l) {
+        l.list.push(item);
+      }
+    });
+    return list;
+  }, [todoItems, category]);
 
   const { popupContainer, popupOpen, popupClose } = usePopup({
     style: { height: 675 },
@@ -93,6 +108,9 @@ export default () => {
             onClick={() => {
               setSettingShow(!settingShow);
             }}
+            onClose={() => {
+              setSettingShow(false);
+            }}
             style={{
               "--nutui-popover-padding": "12px",
               "--nutui-color-mask": "#424242",
@@ -113,7 +131,7 @@ export default () => {
             <SettingOutlined style={{ fontSize: 24 }} />
           </Popover>
         }
-        left={<span style={{ fontSize: 20, fontWeight: 700 }}>待办清单</span>}
+        left={<span style={{ fontSize: 26, fontWeight: 900 }}>可待之日</span>}
         back={null}
         className="todo-nav-bar"
         style={{
@@ -124,29 +142,56 @@ export default () => {
         <TagListBar
           list={category}
           active={activeTagBar}
-          onChange={(v) => {
-            console.log(v);
-            setActiveTagBar(v);
+          onChange={(value, index) => {
+            setActiveTagBar(value);
+            swiperRef.current.to(index);
           }}
         ></TagListBar>
       </div>
-      <div className="todo-item-container">
-        {filterTodoList.map((item) => {
-          return (
-            <div className="todo-item" key={item.id} onClick={() => handleClickTodoItem(item)}>
-              <div className="icon">{item.icon}</div>
-              <div className="desc">
-                <div>{item.desc}</div>
-                <div>{item.date}</div>
-              </div>
-              <div className="upcoming">
-                <div>{item.diffDay}</div>
-                <div>天后</div>
-              </div>
-            </div>
-          );
-        })}
-        {filterTodoList.length === 0 && <Empty title="空空如也~" imageSize={100} image={EmptySvg} />}
+      <div className="todo-item-scroll-container">
+        <Swiper
+          autoplay={0}
+          loop={false}
+          indicator={false}
+          onChange={(current) => {
+            setActiveTagBar(todoSwiperList[current].tagId);
+          }}
+          ref={swiperRef}
+        >
+          {todoSwiperList.map((swiperItem, index) => {
+            return (
+              <Swiper.Item key={swiperItem.tagId}>
+                <div className="todo-item-container">
+                  {swiperItem.list.map((item) => {
+                    return (
+                      <div
+                        className={`todo-item ${item.diffDay === 0 ? "todo-item-celebration" : ""}`}
+                        key={item.id}
+                        onClick={() => handleClickTodoItem(item)}
+                      >
+                        <div className="icon">{item.icon}</div>
+                        <div className="desc">
+                          <div>{item.date}</div>
+                          <div>{item.desc}</div>
+                        </div>
+                        {item.diffDay === 0 ? (
+                          <div className="today">今天</div>
+                        ) : (
+                          <div className="upcoming">
+                            <div>还有</div>
+                            <div className="num">{item.diffDay}</div>
+                            <div>天</div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                  {swiperItem.list.length === 0 && <Empty title="空空如也~" imageSize={100} image={EmptySvg} />}
+                </div>
+              </Swiper.Item>
+            );
+          })}
+        </Swiper>
       </div>
       <FloatingButton
         className="floating-button"

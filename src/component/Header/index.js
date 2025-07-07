@@ -1,6 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import SearchBox from "../SearchBox";
-
 import "./style.scss";
 import { getUserProfile, mockUpload, updateUserProfile } from "@/api";
 import { useFormState } from "@/utils/hooks";
