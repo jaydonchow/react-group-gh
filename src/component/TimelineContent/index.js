@@ -6,6 +6,7 @@ import "./style.css";
 import { Skeleton, Image, ImagePreview, Tag } from "@nutui/nutui-react";
 import { ClockCircleOutlined, DeleteOutlined, EditOutlined, MoreOutlined } from "@ant-design/icons";
 import Tooltip from "rc-tooltip";
+import { useImagePreview } from "../openPopup";
 
 function isEmpty(value) {
   if (value === null) {
@@ -25,7 +26,6 @@ export default (props) => {
   const { dataList, onDeleteFn, onEditFn, isFirstLoad } = props;
 
   const [previewList, setPreviewList] = useState([]);
-
   const actions = [
     {
       key: "edit",
@@ -89,7 +89,7 @@ export default (props) => {
                   return (
                     <Image
                       key={index}
-                      src={l.url}
+                      src={l.url || birdImage}
                       width={64}
                       fit="fill"
                       style={{ borderRadius: 8 }}
@@ -110,12 +110,14 @@ export default (props) => {
         );
       })}
       <div className="no-more">没有更多啦~</div>
-      <ImagePreview
-        images={previewList}
-        visible={previewList.length > 0}
-        onClose={() => setPreviewList([])}
-        indicator
-      />
+      <div className="aaa">
+        <ImagePreview
+          images={previewList}
+          visible={previewList.length > 0}
+          onClose={() => setPreviewList([])}
+          indicator
+        />
+      </div>
     </div>
   );
 };

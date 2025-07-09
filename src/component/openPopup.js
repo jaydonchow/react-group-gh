@@ -1,6 +1,6 @@
-import { Popup } from "@nutui/nutui-react";
+import { Popup, ImagePreview } from "@nutui/nutui-react";
 import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 
 const PopupContainer = forwardRef((initProps, ref) => {
   const { content, ...props } = initProps;
@@ -15,12 +15,11 @@ const PopupContainer = forwardRef((initProps, ref) => {
   });
 
   useEffect(() => {
-    console.log("popup init");
     setVisible(true);
   }, []);
 
   return (
-    <Popup visible={visible} {...props} portal={() => document.getElementById("popup-root")}>
+    <Popup visible={visible} {...props}>
       {content}
     </Popup>
   );
@@ -28,22 +27,40 @@ const PopupContainer = forwardRef((initProps, ref) => {
 
 export function usePopup() {
   const ref = useRef();
-  const render = (initProps) => {
+  const renderContainer = (initProps) => {
     return <PopupContainer ref={ref} {...initProps}></PopupContainer>;
   };
 
-  return (initProps) => {
+  /**
+   * open a popup
+   *
+   * @param {Object} initProps - The Popup props
+   * @return {Function} the function of destroy popup content
+   */
+  const open = (initProps) => {
+    const defaultConfig = {
+      onClose: () => {
+        ref.current.close();
+      },
+    };
+
+    initProps.onClose = initProps.onClose || defaultConfig.onClose;
+
     const div = document.createElement("div");
     div.setAttribute("id", "popup-root");
     document.body.appendChild(div);
     const root = ReactDOM.createRoot(div);
-    root.render(render(initProps));
+    root.render(renderContainer(initProps));
+
     return () => {
       ref.current?.close();
       setTimeout(() => {
         ref.current?.close();
         root.unmount();
+        div.remove();
       }, 1000);
     };
   };
+
+  return open;
 }

@@ -19,19 +19,14 @@ export default () => {
 
   // console.log(form.formValue);
   const handleOpenPopup = () => {
-    const destroy = open({
+    open({
       position: "bottom",
-      onOverlayClick: () => {
-        destroy();
-      },
-      onClose: () => {
-        destroy();
-      },
+      closeOnOverlayClick: true,
       content: <div>123123</div>,
       bodyStyle: {
         height: "80vh",
       },
-    });
+    })
   };
   return (
     <div className="personal-wrapper">

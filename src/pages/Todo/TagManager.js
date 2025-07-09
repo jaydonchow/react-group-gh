@@ -121,6 +121,24 @@ export default () => {
             </>
           }
           onBackClick={(e) => navigate("/todo")}
+          right={
+            <Button
+              type="primary"
+              size="large"
+              fill="none"
+              onClick={() => {
+                openDialog({
+                  title: "新增标签",
+                  maxLength: 10,
+                  onConfirm: (value) => {
+                    fetchAddCategoryItem(value);
+                  },
+                });
+              }}
+            >
+              新增
+            </Button>
+          }
         />
         <DndProvider backend={TouchBackend}>
           <CellGroup divider={false}>
@@ -152,23 +170,6 @@ export default () => {
             })}
           </CellGroup>
         </DndProvider>
-
-        <Button
-          block
-          type="primary"
-          size="large"
-          onClick={() => {
-            openDialog({
-              title: "新增标签",
-              maxLength: 10,
-              onConfirm: (value) => {
-                fetchAddCategoryItem(value);
-              },
-            });
-          }}
-        >
-          新增
-        </Button>
       </div>
     );
   }

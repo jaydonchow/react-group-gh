@@ -44,6 +44,9 @@
         //   box-shadow: 8px 8px 16px #e4e4e4, -8px -8px 16px #f0f0f0;
         text-align: center;
         font-size: 38px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
       }
       .desc {
         flex-grow: 1;
@@ -63,7 +66,7 @@
         :last-child {
           color: #424242;
           font-weight: 700;
-          font-size: 18px;
+          font-size: 16px;
           white-space: nowrap;
         }
       }
@@ -161,7 +164,7 @@
     box-shadow: 0px 0px 6px 0px #00d2a0;
   }
   75% {
-    box-shadow: 0px 0px 6px 0px #5e7ce2;
+    box-shadow: 0px 0px 6px 0px var(--main-color);
   }
   100% {
     box-shadow: 0px 0px 6px 0px #dfdfdf;

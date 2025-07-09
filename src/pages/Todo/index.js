@@ -1,8 +1,7 @@
 import TagListBar from "@/component/TagListBar";
-import "./style.scss";
 import FloatingButton from "@/component/FloatingButton";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { NavBar, Popover, Empty, Dialog, Toast, Swiper, Image } from "@nutui/nutui-react";
+import { useMemo, useRef, useState } from "react";
+import { NavBar, Popover, Empty, Dialog, Toast, Swiper } from "@nutui/nutui-react";
 import { SettingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import AddItem from "./AddItem";
@@ -10,6 +9,7 @@ import { useCategoryStore, useTodoItemStore } from "./utilHooks";
 import EmptySvg from "@/assets/empty.svg";
 import { useActionSheet, usePopup } from "@/component/taroUtils";
 import { deleteTodoItem } from "@/api/todo";
+import "./style.scss";
 
 export default () => {
   const [category, refreshCategory] = useCategoryStore();
@@ -94,6 +94,8 @@ export default () => {
     });
   };
 
+  console.log('todoSwiperList', todoSwiperList);
+
   // const { category } = store;
   return (
     <div className="todo-page">
@@ -105,9 +107,6 @@ export default () => {
             visible={settingShow}
             theme="dark"
             location="bottom-right"
-            onClick={() => {
-              setSettingShow(!settingShow);
-            }}
             onClose={() => {
               setSettingShow(false);
             }}
@@ -128,7 +127,12 @@ export default () => {
               },
             ]}
           >
-            <SettingOutlined style={{ fontSize: 24 }} />
+            <SettingOutlined
+              style={{ fontSize: 24 }}
+              onClick={() => {
+                setSettingShow(!settingShow);
+              }}
+            />
           </Popover>
         }
         left={<span style={{ fontSize: 26, fontWeight: 900 }}>可待之日</span>}
@@ -153,10 +157,10 @@ export default () => {
           autoplay={0}
           loop={false}
           indicator={false}
-          onChange={(current) => {
-            setActiveTagBar(todoSwiperList[current].tagId);
-          }}
           ref={swiperRef}
+          onChange={(swiperIndex) => {
+            setActiveTagBar(todoSwiperList[swiperIndex].tagId);
+          }}
         >
           {todoSwiperList.map((swiperItem, index) => {
             return (

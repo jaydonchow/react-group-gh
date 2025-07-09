@@ -1,8 +1,5 @@
 .drag-card-wrap {
   display: flex;
-  &.dragging {
-    border-bottom: 1px solid black;
-  }
   .drag-handle {
     width: 10%;
     text-align: center;
@@ -11,6 +8,14 @@
     border-bottom: 1px solid #99999966;
     .drag-icon {
       font-size: 16px;
+      user-select: none;
     }
+  }
+}
+
+.drag-card-wrap.dragging {
+  background-color: #faeaff;
+  .nut-cell {
+    background-color: #faeaff;
   }
 }

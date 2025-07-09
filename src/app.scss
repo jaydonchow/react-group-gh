@@ -5,11 +5,11 @@
   --nutui-tag-padding: 12px;
   --nutui-input-font-size: 16px;
   --nutui-tag-font-size: 14px;
-  --nutui-color-primary: #9d4bfa;
-  --nutui-color-primary-stop-1: #9d4bfc;
-  --nutui-color-primary-stop-2: #8e2cff;
-  --nutui-button-primary-disabled: #edadff;
-  --main-color: #9d4bfa;
+  --main-color: #7700ff;
+  --nutui-color-primary: #7700ff;
+  --nutui-color-primary-stop-1: #8d29ff;
+  --nutui-color-primary-stop-2: #8419ff;
+  --nutui-button-primary-disabled: #f1bfff;
   --bold-text-text-shadow: 1px 0 0 currentColor, -1px 0 0 currentColor, 0 1px 0 currentColor, 0 -1px 0 currentColor,
     1px 1px 0 currentColor, -1px -1px 0 currentColor, 1px -1px 0 currentColor, -1px 1px 0 currentColor;
 }
@@ -27,7 +27,6 @@ body {
   font-size: 16px;
   padding-top: env(safe-area-inset-top); /* 适配顶部安全区域 */
   padding-bottom: env(safe-area-inset-bottom); /* 适配底部安全区域 */
-  // background-color: #f0f; /* 如果背景是深色，可以避免白色间隙 */
 }
 
 * {
@@ -46,10 +45,6 @@ a:hover {
 img {
   max-width: 100%;
   display: block;
-}
-
-.app-wrapper {
-  // margin: 20px 10px;
 }
 
 .bottom-tab-bar {
