@@ -15,7 +15,9 @@
 
 .drag-card-wrap.dragging {
   background-color: #faeaff;
+  opacity: 0.5;
   .nut-cell {
+    // opacity: 0.5;
     background-color: #faeaff;
   }
 }

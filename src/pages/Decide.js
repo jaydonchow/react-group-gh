@@ -1,18 +1,52 @@
-import { useState } from "react";
-import EmojiPicker from "jc-emoji-picker";
+import { SettingOutlined } from "@ant-design/icons";
+import { Popover } from "@nutui/nutui-react";
+import { useEffect, useState } from "react";
+import { Label, MyDatePicker } from "./Todo/AddItem";
 export default () => {
-  const [icon, setIcon] = useState("A");
-  const displayName = ["人物", "动物与自然", "食物", "旅行", "活动", "工具", "标志", "旗帜"];
+  const [show, setShow] = useState(false);
+  const [date, setDate] = useState("2017-01-01");
+
+  useEffect(() => {
+    console.log(show);
+  }, [show]);
+
   return (
     <div>
-      <div>点击{icon}</div>
-      <EmojiPicker
-        onSelect={(emoji) => {
-          setIcon(emoji);
-        }}
-        categoryNames={displayName}
-        layout={{ highlight: "#5b5fc766", width: "300px", height: "220px", cellSize: 40 }}
-      ></EmojiPicker>
+      <div style={{ float: "right" }}>
+        <Popover
+          visible={show}
+          theme="dark"
+          location="bottom-right"
+          onClose={() => {
+            console.log("close");
+            setShow(false);
+          }}
+          style={{
+            "--nutui-popover-padding": "12px",
+            "--nutui-color-mask": "#424242",
+          }}
+          list={[
+            {
+              key: "key1",
+              name: <div style={{ padding: "10px" }}>标签管理</div>,
+            },
+          ]}
+        >
+          <SettingOutlined
+            style={{ fontSize: 24 }}
+            onClick={() => {
+              setShow(!show);
+            }}
+          />
+        </Popover>
+      </div>
+      <div>
+        <div>{date}</div>
+        <Label
+          desc="选择时间"
+          content={<MyDatePicker value={date} onChange={(val) => setDate(val)}></MyDatePicker>}
+        ></Label>
+      </div>
     </div>
   );
 };

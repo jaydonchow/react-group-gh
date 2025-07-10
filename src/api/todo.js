@@ -55,7 +55,7 @@ export function addCategoryItem(data) {
     category.set("userId", data.userId || "1");
     // notes.set("title", data.title);
     category.set("label", data.label);
-    category.set("order", data.order || 1);
+    category.set("order", data.order || 99);
 
     category.save().then(
       (cate) => {
