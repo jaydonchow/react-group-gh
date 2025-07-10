@@ -25,8 +25,8 @@ const MyDatePicker = (props) => {
       {/* <div>{format(selectValue)}</div> */}
       <div className="c-date-picker">
         <DatePickerView
-          startDate={beforeYears}
-          afteryears={afterYears}
+          // startDate={beforeYears}
+          // endDate={afterYears}
           defaultValue={selectValue}
           onChange={(_, values) => {
             const str = values.join("-");
