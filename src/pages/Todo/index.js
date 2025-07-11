@@ -102,6 +102,13 @@ export default () => {
       {popupContainer}
       {actionContainer}
       <NavBar
+        back={null}
+        className="todo-nav-bar"
+        style={{
+          height: 80,
+          paddingTop: 'env(safe-area-inset-top)'
+        }}
+        left={<span style={{ fontSize: 26, fontWeight: 900 }}>可待之日</span>}
         right={
           <Popover
             visible={settingShow}
@@ -136,12 +143,7 @@ export default () => {
             />
           </Popover>
         }
-        left={<span style={{ fontSize: 26, fontWeight: 900 }}>可待之日</span>}
-        back={null}
-        className="todo-nav-bar"
-        style={{
-          height: 80,
-        }}
+
       />
       <div>
         <TagListBar

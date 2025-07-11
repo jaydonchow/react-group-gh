@@ -1,140 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="utf-8" />
-  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <meta name="theme-color" content="#000000" />
-  <meta name="description" content="Web site created using create-react-app" />
-  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-  <!--
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
-  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-  <style>
-    /* 动态渐变背景容器 */
-    .dynamic-background {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      filter: blur(20px) contrast(120%);
-      opacity: 0.9;
-      overflow: hidden;
-    }
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <style>
+      /* 动态渐变背景容器 */
+      .dynamic-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        filter: blur(20px) contrast(120%);
+        opacity: 0.9;
+        overflow: hidden;
+      }
 
-    /* 流动形状元素 */
-    .shape {
-      position: absolute;
-      border-radius: 50%;
-      background: radial-gradient(circle at center,
+      /* 流动形状元素 */
+      .shape {
+        position: absolute;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle at center,
           var(--start-color),
-          var(--end-color));
-      opacity: 0.7;
-      animation: move 10s infinite alternate ease-in-out;
-      filter: blur(20px);
-    }
-
-    .shape:nth-child(1) {
-      --start-color: rgba(255, 150, 170, 0.8);
-      /* 浅红色 */
-      --end-color: rgba(255, 150, 170, 0);
-      width: 400px;
-      height: 400px;
-      top: 10%;
-      left: 15%;
-      animation-duration: 10s;
-      animation-delay: 0s;
-    }
-
-    .shape:nth-child(2) {
-      --start-color: rgba(170, 200, 255, 0.8);
-      /* 浅蓝色 */
-      --end-color: rgba(170, 200, 255, 0);
-      width: 500px;
-      height: 500px;
-      bottom: 10%;
-      right: 15%;
-      animation-duration: 13s;
-      animation-delay: 3s;
-    }
-
-    .shape:nth-child(3) {
-      --start-color: rgba(255, 180, 200, 0.7);
-      /* 浅粉色 */
-      --end-color: rgba(255, 180, 200, 0);
-      width: 350px;
-      height: 350px;
-      top: 40%;
-      right: 25%;
-      animation-duration: 16s;
-      animation-delay: 6s;
-    }
-
-    .shape:nth-child(4) {
-      --start-color: rgba(160, 210, 255, 0.7);
-      /* 浅天蓝色 */
-      --end-color: rgba(160, 210, 255, 0);
-      width: 450px;
-      height: 450px;
-      bottom: 30%;
-      left: 20%;
-      animation-duration: 20s;
-      animation-delay: 9s;
-    }
-
-    .shape:nth-child(5) {
-      --start-color: rgba(255, 170, 190, 0.6);
-      /* 浅玫瑰色 */
-      --end-color: rgba(255, 170, 190, 0);
-      width: 300px;
-      height: 300px;
-      top: 15%;
-      right: 10%;
-      animation-duration: 22s;
-      animation-delay: 12s;
-    }
-
-    .shape:nth-child(6) {
-      --start-color: rgba(180, 220, 255, 0.6);
-      /* 浅冰蓝色 */
-      --end-color: rgba(180, 220, 255, 0);
-      width: 380px;
-      height: 380px;
-      bottom: 15%;
-      left: 30%;
-      animation-duration: 25s;
-      animation-delay: 15s;
-    }
-
-    /* 动画定义 */
-    @keyframes move {
-      0% {
-        transform: translate(0, 0) scale(1);
+          var(--end-color)
+        );
+        opacity: 0.7;
+        animation: move 10s infinite alternate ease-in-out;
+        filter: blur(20px);
       }
 
-      25% {
-        transform: translate(100px, -80px) scale(1.1);
+      .shape:nth-child(1) {
+        --start-color: rgba(255, 150, 170, 0.8);
+        /* 浅红色 */
+        --end-color: rgba(255, 150, 170, 0);
+        width: 400px;
+        height: 400px;
+        top: 10%;
+        left: 15%;
+        animation-duration: 10s;
+        animation-delay: 0s;
       }
 
-      50% {
-        transform: translate(-80px, 120px) scale(0.9);
+      .shape:nth-child(2) {
+        --start-color: rgba(170, 200, 255, 0.8);
+        /* 浅蓝色 */
+        --end-color: rgba(170, 200, 255, 0);
+        width: 500px;
+        height: 500px;
+        bottom: 10%;
+        right: 15%;
+        animation-duration: 13s;
+        animation-delay: 3s;
       }
 
-      75% {
-        transform: translate(120px, 100px) scale(1.2);
+      .shape:nth-child(3) {
+        --start-color: rgba(255, 180, 200, 0.7);
+        /* 浅粉色 */
+        --end-color: rgba(255, 180, 200, 0);
+        width: 350px;
+        height: 350px;
+        top: 40%;
+        right: 25%;
+        animation-duration: 16s;
+        animation-delay: 6s;
       }
 
-      100% {
-        transform: translate(-100px, -100px) scale(1);
+      .shape:nth-child(4) {
+        --start-color: rgba(160, 210, 255, 0.7);
+        /* 浅天蓝色 */
+        --end-color: rgba(160, 210, 255, 0);
+        width: 450px;
+        height: 450px;
+        bottom: 30%;
+        left: 20%;
+        animation-duration: 20s;
+        animation-delay: 9s;
       }
-    }
-  </style>
-  <!--
+
+      .shape:nth-child(5) {
+        --start-color: rgba(255, 170, 190, 0.6);
+        /* 浅玫瑰色 */
+        --end-color: rgba(255, 170, 190, 0);
+        width: 300px;
+        height: 300px;
+        top: 15%;
+        right: 10%;
+        animation-duration: 22s;
+        animation-delay: 12s;
+      }
+
+      .shape:nth-child(6) {
+        --start-color: rgba(180, 220, 255, 0.6);
+        /* 浅冰蓝色 */
+        --end-color: rgba(180, 220, 255, 0);
+        width: 380px;
+        height: 380px;
+        bottom: 15%;
+        left: 30%;
+        animation-duration: 25s;
+        animation-delay: 15s;
+      }
+
+      /* 动画定义 */
+      @keyframes move {
+        0% {
+          transform: translate(0, 0) scale(1);
+        }
+
+        25% {
+          transform: translate(100px, -80px) scale(1.1);
+        }
+
+        50% {
+          transform: translate(-80px, 120px) scale(0.9);
+        }
+
+        75% {
+          transform: translate(120px, 100px) scale(1.2);
+        }
+
+        100% {
+          transform: translate(-100px, -100px) scale(1);
+        }
+      }
+    </style>
+    <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.
@@ -143,21 +150,21 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-  <title>React App</title>
-</head>
+    <title>React App</title>
+  </head>
 
-<body>
-  <div class="dynamic-background">
-    <div class="shape"></div>
-    <div class="shape"></div>
-    <div class="shape"></div>
-    <div class="shape"></div>
-    <div class="shape"></div>
-    <div class="shape"></div>
-  </div>
-  <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="root"></div>
-  <!--
+  <body>
+    <div class="dynamic-background">
+      <div class="shape"></div>
+      <div class="shape"></div>
+      <div class="shape"></div>
+      <div class="shape"></div>
+      <div class="shape"></div>
+      <div class="shape"></div>
+    </div>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
 
@@ -167,6 +174,5 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-</body>
-
+  </body>
 </html>
