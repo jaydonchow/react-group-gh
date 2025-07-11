@@ -151,7 +151,7 @@ function useInputDialog() {
           onChange={(val) => {
             value.current = val;
           }}
-          style={{ border: "2px solid var(--main-color)" }}
+          style={{ border: "3px solid var(--main-color)", borderRadius: '6px' }}
         ></Input>
       ),
       onConfirm: (e) => {

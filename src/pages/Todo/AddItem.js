@@ -3,40 +3,45 @@ import { useMemo, useState } from "react";
 import TagRadio from "@/component/TagListBar/TagRadio";
 import { addTodoItem, updateTodoItem } from "@/api/todo";
 import { useContainer } from "@/component/hooks/useContainer";
-import { Button, Input, Popup, DatePickerView } from "@nutui/nutui-react";
+import { Button, Input, Popup, DatePicker } from "@nutui/nutui-react";
 import { SmileOutlined } from "@ant-design/icons";
 import EmojiPicker from "jc-emoji-picker";
+import { format } from "@/component/dateHelper";
 
 const MyDatePicker = (props) => {
   const { value, onChange } = props;
-  const [selectValue, setSelectValue] = useState(() => {
+  const [visible, setVisible] = useState(true);
+
+  const defaultValue = useMemo(() => {
     const d = new Date(value);
     if (Number.isNaN(d.getTime())) {
       return new Date();
     }
     return d;
-  });
+  }, [value]);
 
   const beforeYears = new Date("1970-1-1");
   const afterYears = new Date("2050-12-31");
 
   return (
     <>
-      {/* <div>{format(selectValue)}</div> */}
       <div className="c-date-picker">
-        <DatePickerView
-          // startDate={beforeYears}
-          // endDate={afterYears}
-          defaultValue={selectValue}
+        <DatePicker
+          visible={visible}
+          onClose={() => setVisible(false)}
+          startDate={beforeYears}
+          endDate={afterYears}
+          defaultValue={defaultValue}
           onChange={(_, values) => {
             const str = values.join("-");
-            setSelectValue(new Date(str));
             onChange(str);
           }}
-          style={{
-            "--nutui-picker-item-height": "26px",
-            "--nutui-picker-item-text-font-size": 16,
-            fontFamily: "inherit",
+          pickerProps={{
+            popupProps: {
+              overlay: false,
+              className: "c-date-picker-popup",
+              round: false,
+            },
           }}
         />
       </div>
@@ -95,8 +100,8 @@ const AddItem = ({ onConfirm, type, defaultValue = {} }) => {
   };
 
   const passed = useMemo(() => {
-    return desc && tagId;
-  }, [desc, tagId]);
+    return desc && tagId && date && icon;
+  }, [desc, tagId, date, icon]);
 
   return (
     <div className="todo-add-item-form">
@@ -185,7 +190,4 @@ const AddItem = ({ onConfirm, type, defaultValue = {} }) => {
 
 export default AddItem;
 
-export {
-  MyDatePicker,
-  Label
-}
+export { MyDatePicker, Label };

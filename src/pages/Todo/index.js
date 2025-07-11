@@ -106,7 +106,8 @@ export default () => {
           <Popover
             visible={settingShow}
             theme="dark"
-            location="bottom-right"
+            location="bottom-end"
+            showArrow={false}
             onClose={() => {
               setSettingShow(false);
             }}
@@ -160,6 +161,11 @@ export default () => {
           ref={swiperRef}
           onChange={(swiperIndex) => {
             setActiveTagBar(todoSwiperList[swiperIndex].tagId);
+          }}
+          style={{
+            overflowX: 'hidden',
+            overflowY: 'scroll',
+            scrollbarWidth: 'none'
           }}
         >
           {todoSwiperList.map((swiperItem, index) => {

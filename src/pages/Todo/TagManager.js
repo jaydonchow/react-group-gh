@@ -108,11 +108,12 @@ export default () => {
       <div>
         {actionContainer}
         <NavBar
-          title="标签管理"
           style={{
             height: 80,
             padding: "20px 10px",
             borderBottom: "2px solid #99999966",
+            marginBottom: 0,
+            background: "#fff",
           }}
           back={
             <>
@@ -123,9 +124,10 @@ export default () => {
           onBackClick={(e) => navigate("/todo")}
           right={
             <Button
-              type="primary"
+              // type="primary"
               size="large"
-              fill="none"
+              fill="outline"
+              color="#7232dd"
               onClick={() => {
                 openDialog({
                   title: "新增标签",
@@ -139,9 +141,11 @@ export default () => {
               新增
             </Button>
           }
-        />
+        >
+          <b>标签管理</b>
+        </NavBar>
         <DndProvider backend={TouchBackend}>
-          <CellGroup divider={false}>
+          <CellGroup divider={false} style={{ "--nutui-cell-group-wrap-margin": 0 }}>
             {category.map((cate, index) => {
               // return CategoryItemRender(cate, index);
               return (

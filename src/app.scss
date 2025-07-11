@@ -5,10 +5,10 @@
   --nutui-tag-padding: 12px;
   --nutui-input-font-size: 16px;
   --nutui-tag-font-size: 14px;
-  --main-color: #7700ff;
-  --nutui-color-primary: #7700ff;
-  --nutui-color-primary-stop-1: #8d29ff;
-  --nutui-color-primary-stop-2: #8419ff;
+  --main-color: #7700ff !important;
+  --nutui-color-primary: #7700ff !important;
+  --nutui-color-primary-stop-1: #8d29ff !important ;
+  --nutui-color-primary-stop-2: #8419ff !important;
   --nutui-button-primary-disabled: #f1bfff;
   --bold-text-text-shadow: 1px 0 0 currentColor, -1px 0 0 currentColor, 0 1px 0 currentColor, 0 -1px 0 currentColor,
     1px 1px 0 currentColor, -1px -1px 0 currentColor, 1px -1px 0 currentColor, -1px 1px 0 currentColor;
@@ -19,9 +19,12 @@ body {
   margin: 0;
   height: 100vh;
   max-height: -webkit-fill-available;
-  overflow: scroll;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
-    "Droid Sans", "Helvetica Neue", sans-serif;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  font-family: apple color emoji, segoe ui emoji, noto color emoji, android emoji,
+    emojisymbols, emojione mozilla, twemoji mozilla, segoe ui symbol, Noto Color Emoji Compat, emoji, sans-serif;
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 16px;

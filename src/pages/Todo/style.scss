@@ -10,8 +10,10 @@
   .todo-item-scroll-container {
     margin-top: 140px;
     width: 100%;
-    height: calc(100vh - 80px - 55px - 60px - 40px);
-    overflow: scroll;
+    height: calc(100vh - 80px - 55px - 80px);
+    overflow-x: hidden;
+    overflow-y: scroll;
+    scrollbar-width: none;
   }
   .todo-item-container {
     display: flex;
@@ -76,7 +78,7 @@
         line-height: 36px;
         align-self: center;
         color: var(--main-color);
-        text-shadow: var(--bold-text-text-shadow);
+        // text-shadow: var(--bold-text-text-shadow);
       }
       .upcoming {
         text-align: right;
@@ -114,7 +116,9 @@
   padding: 20px;
   padding-top: 40px;
   height: 100%;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scrollbar-width: none;
   .icon {
     font-size: 80px;
     text-align: center;
@@ -136,20 +140,47 @@
 }
 
 .c-date-picker {
-  width: 200px;
+  width: 180px;
   font-size: 18px;
+  position: relative;
   //   background: #fefefe;
-  .nut-pickerview-roller-item {
-    color: #969696;
-  }
-  .nut-pickerview-roller-item.nut-pickerview-roller-item-active {
-    color: #000;
-  }
-  .nut-pickerview-indicator {
-    border: 1px solid #f0f0f0;
-    background-color: #f0f0f0;
-    border-radius: 8px;
-    z-index: 0;
+  .nut-popup-bottom.nut-popup-round.c-date-picker-popup {
+    margin-top: -10px;
+    position: relative;
+    height: 200px;
+    max-height: 200px;
+    width: 220px;
+    overflow: hidden;
+    border-radius: 0px;
+    --nutui-picker-item-text-font-size: 16;
+    --nutui-picker-list-height: 200px;
+    font-family: inherit;
+    .nut-picker-control {
+      display: none;
+    }
+    .nut-picker {
+      background-color: transparent;
+      font-weight: 700;
+    }
+    .nut-picker-list {
+      .nut-picker-indicator {
+        border: 1px solid #f0f0f0;
+        background-color: #f0f0f0;
+        z-index: 0;
+      }
+      &:first-child {
+        .nut-picker-indicator {
+          border-top-left-radius: 8px;
+          border-bottom-left-radius: 8px;
+        }
+      }
+      &:last-child {
+        .nut-picker-indicator {
+          border-top-right-radius: 8px;
+          border-bottom-right-radius: 8px;
+        }
+      }
+    }
   }
 }
 
