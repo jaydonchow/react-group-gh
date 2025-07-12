@@ -20,7 +20,7 @@ const MyDatePicker = (props) => {
     return d;
   }, [value]);
 
-  const beforeYears = new Date("1970-1-1");
+  const beforeYears = new Date("1970-01-01");
   const afterYears = new Date("2050-12-31");
 
   return (
