@@ -58,7 +58,7 @@ export default () => {
   const { popupContainer, popupOpen, popupClose } = usePopup({
     style: { height: 675 },
     position: "bottom",
-    portal: () => document.body,
+    portal: () => document.body, // WARN TARO
   });
 
   const handleClickTodoItem = (item) => {
@@ -94,7 +94,7 @@ export default () => {
     });
   };
 
-  console.log('todoSwiperList', todoSwiperList);
+  console.log("todoSwiperList", todoSwiperList);
 
   // const { category } = store;
   return (
@@ -106,7 +106,7 @@ export default () => {
         className="todo-nav-bar"
         style={{
           height: 80,
-          paddingTop: 'env(safe-area-inset-top)'
+          paddingTop: "env(safe-area-inset-top)",
         }}
         left={<span style={{ fontSize: 26, fontWeight: 900 }}>可待之日</span>}
         right={
@@ -126,11 +126,17 @@ export default () => {
               {
                 key: "key1",
                 name: (
-                  <div style={{ padding: "10px" }}>
-                    <Link to="/todo/tag_manager" style={{ color: "#fff" }}>
-                      标签管理
-                    </Link>
-                  </div>
+                  <Link to="/todo/tag_manager" style={{ color: "#fff" }}>
+                    标签管理
+                  </Link>
+                ),
+              },
+              {
+                key: "key2",
+                name: (
+                  <Link to="/todo/theme" style={{ color: "#fff" }}>
+                    主题配置
+                  </Link>
                 ),
               },
             ]}
@@ -143,7 +149,6 @@ export default () => {
             />
           </Popover>
         }
-
       />
       <div>
         <TagListBar
@@ -165,9 +170,9 @@ export default () => {
             setActiveTagBar(todoSwiperList[swiperIndex].tagId);
           }}
           style={{
-            overflowX: 'hidden',
-            overflowY: 'scroll',
-            scrollbarWidth: 'none'
+            overflowX: "hidden",
+            overflowY: "scroll",
+            scrollbarWidth: "none",
           }}
         >
           {todoSwiperList.map((swiperItem, index) => {

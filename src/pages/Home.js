@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import AddDataForm from "@/component/AddDataForm";
 import TimelineContent from "@/component/TimelineContent";
-import { addNoteItem, queryByUserId, updateNoteItem, deleteNoteItem, getUserProfile } from "@/api/index";
+import { addNoteItem, queryNotesByUserId, updateNoteItem, deleteNoteItem, getUserProfile } from "@/api/index";
 import Header from "@/component/Header";
 import FloatingButton from "@/component/FloatingButton";
 import { Popup, Empty, Toast } from "@nutui/nutui-react";
@@ -17,7 +17,7 @@ export default () => {
   }, []);
 
   function fetchData() {
-    queryByUserId().then((res) => {
+    queryNotesByUserId().then((res) => {
       if (isFirstLoad === 0) {
         setIsFirstLoad(1);
       }

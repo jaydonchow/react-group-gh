@@ -4,11 +4,18 @@
   --nutui-tag-padding: 12px;
   --nutui-input-font-size: 16px;
   --nutui-tag-font-size: 14px;
-  --main-color: #7700ff !important;
-  --nutui-color-primary: #7700ff !important;
-  --nutui-color-primary-stop-1: #8d29ff !important;
-  --nutui-color-primary-stop-2: #8419ff !important;
-  --nutui-button-primary-disabled: #f1bfff;
+  --main-color: #7700ff;
+  --main-stop-1: #8d29ff;
+  --main-stop-2: #8419ff;
+  --main-disabled: #f1bfff;
+  //   --main-color: #ff0066;
+  // --main-stop-1: #ff1a7a;
+  // --main-stop-2: #ff0070;
+  // --main-disabled: #ffb3d1;
+  --nutui-color-primary: var(--main-color) !important;
+  --nutui-color-primary-stop-1: var(--main-stop-1) !important;
+  --nutui-color-primary-stop-2: var(--main-stop-2) !important;
+  --nutui-button-primary-disabled: var(--main-disabled);
   --bold-text-text-shadow: 1px 0 0 currentColor, -1px 0 0 currentColor, 0 1px 0 currentColor, 0 -1px 0 currentColor,
     1px 1px 0 currentColor, -1px -1px 0 currentColor, 1px -1px 0 currentColor, -1px 1px 0 currentColor;
 }

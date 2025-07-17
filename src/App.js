@@ -3,14 +3,18 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import "./app.scss";
 import { Tabbar } from "@nutui/nutui-react";
 import { Store, List, Phone } from "@nutui/icons-react";
+import { getUserProfile } from "./api";
+import { useContainer } from "./component/hooks/useContainer";
+import { useUserDataStore } from "./pages/Todo/utilHooks";
+import { generateColorVariants } from "./utils";
 // npm i @phosphor-icons/react
 export default () => {
   const [activeTab, setActiveTab] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
-
+  const [userData, refresh] = useUserDataStore();
   useEffect(() => {
-    console.log('location', location);
+    console.log("location", location);
     if (location.pathname === "/") {
       setActiveTab("/todo");
     } else {
@@ -23,6 +27,19 @@ export default () => {
       navigate(activeTab);
     }
   }, [activeTab]);
+
+  useEffect(() => {
+    if (userData) {
+      const mainColor = userData.systemConfig.mainColor;
+      if(mainColor) {
+        const obj = generateColorVariants(mainColor);
+        const root = document.documentElement;
+        Object.keys(obj).forEach((key) => {
+          root.style.setProperty(key, obj[key]);
+        });
+      }
+    }
+  }, [userData]);
 
   const tabs = [
     {

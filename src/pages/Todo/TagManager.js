@@ -125,9 +125,12 @@ export default () => {
           right={
             <Button
               // type="primary"
-              size="large"
+              // size="large"
               fill="outline"
-              color="#7232dd"
+              style={{
+                color: "var(--main-color)",
+                borderColor: "var(--main-color)",
+              }}
               onClick={() => {
                 openDialog({
                   title: "新增标签",

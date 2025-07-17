@@ -3,8 +3,8 @@ const fs = require("fs");
 const path = require("path");
 const readline = require("readline");
 // 配置参数
-const sourcePath = "E:\\Code\\react-group"; // 替换为源目录路径
-const targetPath = "E:\\Code\\react-group-gh"; // 替换为目标目录路径
+const targetPath = "E:\\Code\\react-group"; // 替换为源目录路径
+const sourcePath = "E:\\Code\\react-group-gh"; // 替换为目标目录路径
 const whiteList = [".git", "node_modules", ".next", ".vscode", "out", "lib"]; // 白名单配置（相对路径）
 // 创建命令行交互接口
 const rl = readline.createInterface({
@@ -69,7 +69,7 @@ function run() {
 
       // 第一阶段：更新源仓库
       console.log("🔄 正在更新源仓库...");
-      execSync("git pull", { cwd: sourcePath, stdio: "inherit" });
+      // execSync("git pull", { cwd: sourcePath, stdio: "inherit" });
 
       // 第二阶段：文件同步
       console.log("🚀 正在同步文件到目标目录...");

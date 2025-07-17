@@ -6,7 +6,6 @@ import { useContainer } from "@/component/hooks/useContainer";
 import { Button, Input, Popup, DatePicker } from "@nutui/nutui-react";
 import { SmileOutlined } from "@ant-design/icons";
 import EmojiPicker from "jc-emoji-picker";
-import { format } from "@/component/dateHelper";
 
 const MyDatePicker = (props) => {
   const { value, onChange } = props;
@@ -32,8 +31,9 @@ const MyDatePicker = (props) => {
           startDate={beforeYears}
           endDate={afterYears}
           defaultValue={defaultValue}
-          onChange={(_, values) => {
-            const str = values.join("-");
+          onChange={(values) => {
+            const dateArr = values.map(v => v.value);
+            const str = dateArr.join("-");
             onChange(str);
           }}
           pickerProps={{

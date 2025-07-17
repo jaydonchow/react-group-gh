@@ -4,7 +4,7 @@ import "./style.css";
 import { mockUpload } from "@/api";
 import { useFormState } from "@/utils/hooks";
 import { DatePicker, TextArea, Input, Button, Uploader } from "@nutui/nutui-react";
-import { format } from "../dateHelper";
+import { format } from "@/utils";
 
 export default (props) => {
   const { inputData, onSave } = props;

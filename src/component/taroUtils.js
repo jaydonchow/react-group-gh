@@ -75,7 +75,7 @@ function useUploader(config) {
   );
 
   const uploaderOpen = () => {
-    const target = document.querySelector(".use-uploader .nut-uploader-input");
+    const target = document.querySelector(".use-uploader .nut-uploader-input"); // WARN TARO
     target.click();
   };
 
@@ -102,7 +102,7 @@ function useCategoryDialog() {
             defaultValue={false}
             onChange={(val) => {
               value.current.checked = val;
-              const w = document.querySelector(".use-category-dialog-tag-select");
+              const w = document.querySelector(".use-category-dialog-tag-select"); // WARN TARO
               if (val) {
                 // show
                 w.style.height = "auto";

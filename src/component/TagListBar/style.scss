@@ -7,7 +7,7 @@
   -webkit-overflow-scrolling: touch; /* 启用iOS的平滑滚动和回弹效果 */
   overscroll-behavior: contain; /* 防止滚动链，但不会阻止回弹效果 */
   .container {
-    width: 1000px;
+    width: 10000px;
     min-width: 100%;
     display: flex;
     flex-wrap: nowrap;

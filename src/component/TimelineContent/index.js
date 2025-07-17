@@ -7,20 +7,7 @@ import { Skeleton, Image, ImagePreview, Tag } from "@nutui/nutui-react";
 import { ClockCircleOutlined, DeleteOutlined, EditOutlined, MoreOutlined } from "@ant-design/icons";
 import Tooltip from "rc-tooltip";
 import { useImagePreview } from "../openPopup";
-
-function isEmpty(value) {
-  if (value === null) {
-    return true;
-  }
-  if (Array.isArray(value)) {
-    return value.length === 0;
-  }
-
-  if (typeof value === "object") {
-    return false;
-  }
-  return !value;
-}
+import { isEmpty } from "@/utils";
 
 export default (props) => {
   const { dataList, onDeleteFn, onEditFn, isFirstLoad } = props;

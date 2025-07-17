@@ -34,7 +34,7 @@ export function addNoteItem(data) {
   );
 }
 
-export function queryByUserId() {
+export function queryNotesByUserId() {
   const query = new AV.Query("Notes");
   query.equalTo("userId", "1");
   // query.get("68275067d3496c42466ad9c3").then
@@ -94,6 +94,7 @@ export function addUser(data) {
   user.set("avatarUrl", data.avatarUrl || "");
   user.set("account", data.account || "123456");
   user.set("password", data.password || "123456");
+  user.set("systemConfig", data.systemConfig || {});
 
   // 将对象保存到云端
   user.save().then(
@@ -110,9 +111,12 @@ export function addUser(data) {
 
 export async function getUserProfile(id) {
   const query = new AV.Query("Users");
+  // query.equalTo("userId", "1");
+
   return new Promise((resolve) => {
     query
       .get(id)
+      // .find()
       .then((user) => {
         // // 获取内置属性
         // const objectId = todo.id;
@@ -137,8 +141,9 @@ export async function updateUserProfile(data) {
   data.avatarUrl && user.set("avatarUrl", data.avatarUrl);
   data.account && user.set("account", data.account);
   data.password && user.set("password", data.password);
+  data.systemConfig && user.set("systemConfig", data.systemConfig);
   const result = await user.save();
-  Toast.show("修改成功");
+  // Toast.show("修改成功");
   return result;
 }
 

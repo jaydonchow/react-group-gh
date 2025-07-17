@@ -9,6 +9,7 @@ import Demo from "./pages/Demo";
 import TagManager from "./pages/Todo/TagManager";
 import App from "./App";
 import "@nutui/nutui-react/dist/style.css";
+import Theme from "./pages/Todo/Theme";
 
 const RouterContainer = () => {
   return (
@@ -17,8 +18,9 @@ const RouterContainer = () => {
         <Route path="home" element={<Home />} />
         <Route path="todo" element={<Todo />} />
         <Route path="decide" element={<Decide />} />
+        <Route path="todo/tag_manager" element={<TagManager />} />
+        <Route path="todo/theme" element={<Theme />} />
       </Route>
-      <Route path="todo/tag_manager" element={<TagManager />} />
       <Route path="demo" element={<Demo />} />
     </Routes>
   );

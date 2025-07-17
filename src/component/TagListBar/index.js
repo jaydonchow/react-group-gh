@@ -9,19 +9,21 @@ export default (props) => {
   // const [activeKey, setActiveKey] = useState(active || "ALL");
   const [width, setWidth] = useState(0);
 
-  // useEffect(() => {
-  //   setActiveKey(active);
-  // }, [active]);
-
   useEffect(() => {
-    let _width = 0;
     const container = document.querySelector(".tag-list-bar .container");
-    [...container.children].forEach((child) => {
-      _width += child.clientWidth;
-    });
-    _width = _width + (gap * container.children.length - 1) + padding * 2;
-    setWidth(_width);
+    const lastChild = container.lastChild;
+    const width = lastChild.clientWidth + lastChild.offsetLeft;
+    setWidth(width + 10);
   }, [list]);
+
+  // Taro 小程序
+  // useReady(() => {
+  //   // 初次渲染时，在小程序触发 onReady 后，才能获取小程序的渲染层节点
+  //   Taro.createSelectorQuery()
+  //     .select('#target')
+  //     .boundingClientRect()
+  //     .exec(res => console.log(res))
+  // })
 
   const allList = [
     {
